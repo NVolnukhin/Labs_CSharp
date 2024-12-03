@@ -12,15 +12,15 @@ public class ConveyorSystem
     public ConveyorSystem(Configuration config)
     {
         _config = config;
-
-        // Создаем обработчики
+        
+        // Создаем эмиттер (стекольный завод)
+        _emitter = new EventEmitter(1, config.EmitterInterval, _eventQueue);
+        
+        // Создаем обработчики (сборщики поставок)
         for (int i = 0; i < config.ProcessorDelays.Length; i++)
         {
             _processors.Add(new EventProcessor(i + 1, config.ProcessorDelays[i], _eventQueue));
         }
-
-        // Создаем эмиттер
-        _emitter = new EventEmitter(1, config.EmitterInterval, _eventQueue);
     }
 
     public async Task StartAsync()
