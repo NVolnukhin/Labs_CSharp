@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseContext;
 
-public class DatabaseContext : DbContext
+public class AppDbContext : DbContext
 {
     public DbSet<Exhibition> Exhibitions { get; set; }
     public DbSet<Visitor> Visitors { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
 
-    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
