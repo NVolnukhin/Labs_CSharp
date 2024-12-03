@@ -1,4 +1,5 @@
-﻿using DatabaseModel;
+﻿using DatabaseContext.Configurations;
+using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -16,15 +17,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Настройка связи Ticket -> Exhibition и Visitor
-        modelBuilder.Entity<Ticket>()
-            .HasOne(t => t.Exhibition)
-            .WithMany(e => e.Tickets)
-            .HasForeignKey(t => t.ExhibitionId);
-
-        modelBuilder.Entity<Ticket>()
-            .HasOne(t => t.Visitor)
-            .WithMany(v => v.Tickets)
-            .HasForeignKey(t => t.VisitorId);
+        modelBuilder.ApplyConfiguration(new TicketConfiguration());
         
         base.OnModelCreating(modelBuilder);
     }
