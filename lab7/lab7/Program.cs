@@ -7,7 +7,8 @@ class Program
         var config = new Configuration
         {
             EmitterInterval = 500, // Интервал генерации событий (мс)
-            ProcessorDelays = [300, 500], // Задержки обработки
+            ProcessorDelays = [500, 300], // Задержки обработки
+            RecieverDelays = [700, 500],
             SimulationDuration = 10000 // Продолжительность моделирования (мс)
         };
 
