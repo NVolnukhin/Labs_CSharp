@@ -87,7 +87,7 @@ class Program
             v3[1] = 88;
             v3[10] = 77;
         }
-        catch (System.IndexOutOfRangeException ex)
+        catch (IndexOutOfRangeException ex)
         {
             Console.WriteLine("Ошибка: " + ex.Message);
         }
