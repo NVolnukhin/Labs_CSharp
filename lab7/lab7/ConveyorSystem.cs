@@ -16,21 +16,21 @@ public class ConveyorSystem
         _config = config;
         
         // Создаем эмиттер (стекольный завод)
-        for (int i = 0; i < config.EmitterDelays.Length; i++)
+        for (int i = 0; i < config.EmitterDelays.Length; ++i)
         {
             _emitters.Add(new EventEmitter(i + 1, config.EmitterDelays[i], _orderQueue));
         }
         
         // Создаем обработчики (сборщики поставок)
-        for (int i = 0; i < config.ProcessorDelays.Length; i++)
+        for (int i = 0; i < config.ProcessorDelays.Length; ++i)
         {
             _processors.Add(new EventProcessor(i + 1, config.ProcessorDelays[i], _orderQueue, _billingQueue));
         }
         
         // Создаем получателей (поставок)
-        for (int i = 0; i < config.RecieverDelays.Length; i++)
+        for (int i = 0; i < config.RecieverDelays.Length; ++i)
         {
-            _recievers.Add(new EventReciever(i + 1, config.ProcessorDelays[i], _billingQueue));
+            _recievers.Add(new EventReciever(i + 1, config.RecieverDelays[i], _billingQueue));
         }
     }
 

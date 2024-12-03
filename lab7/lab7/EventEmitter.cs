@@ -7,7 +7,7 @@ public class EventEmitter
     private readonly int _id;
     private readonly int _delay;
     private readonly BlockingCollection<Event> _queue;
-    private CancellationTokenSource _cts;
+    private readonly CancellationTokenSource _cts;
     private int _eventsGenerated = 0;
     
     public int Id => _id;
@@ -46,7 +46,6 @@ public class EventEmitter
     {
         Log.Write($"Стекольный завод {_id} начал выполнение заказа {eventItem}");
         await Task.Delay(_delay, _cts.Token);
-        //Interlocked.Increment(ref _eventsGenerated);
         Log.Write($"Стекольный завод {_id} завершил выполнение заказа {eventItem}");
 
         // Передаем событие в следующую очередь

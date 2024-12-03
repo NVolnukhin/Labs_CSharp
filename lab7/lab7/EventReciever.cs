@@ -7,7 +7,7 @@ public class EventReciever
     private readonly int _id;
     private readonly int _processingDelay;
     private readonly BlockingCollection<Event> _queue;
-    private CancellationTokenSource _cts;
+    private readonly CancellationTokenSource _cts;
     private int _eventsProcessed = 0;
 
     public int Id => _id;
