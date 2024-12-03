@@ -8,9 +8,10 @@ public class EventEmitter
     private readonly int _delay;
     private readonly BlockingCollection<Event> _queue;
     private CancellationTokenSource _cts;
-    private static int _eventsGenerated = 0;
+    private int _eventsGenerated = 0;
     
-    public static int EventsGenerated => _eventsGenerated;
+    public int Id => _id;
+    public int EventsGenerated => _eventsGenerated;
 
     public EventEmitter(int id, int delay, BlockingCollection<Event> queue)
     {

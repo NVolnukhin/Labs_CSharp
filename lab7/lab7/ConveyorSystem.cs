@@ -71,11 +71,20 @@ public class ConveyorSystem
 
     private void LogMetrics()
     {
-        Console.WriteLine("Сводка:");
-        Console.WriteLine($"Всего сгенерировано событий: {EventEmitter.EventsGenerated}");
+        Console.WriteLine("\n------------------------------------Сводка------------------------------------\n");
+        foreach (var emitter in _emitters)
+        {
+            Console.WriteLine($"Стекольный завод {emitter.Id}: Выполнено заказов: {emitter.EventsGenerated}");
+        }
+        Console.WriteLine("\n");
         foreach (var processor in _processors)
         {
-            Console.WriteLine($"Обработчик {processor.Id}: Обработано событий: {EventReciever.EventsProcessed}");
+            Console.WriteLine($"Курьерская компания {processor.Id}: Доставлено заказов: {processor.EventsProcessed}");
+        }
+        Console.WriteLine("\n");
+        foreach (var reciever in _recievers)
+        {
+            Console.WriteLine($"Получатель {reciever.Id}: Получено заказов: {reciever.EventsProcessed}");
         }
     }
 }

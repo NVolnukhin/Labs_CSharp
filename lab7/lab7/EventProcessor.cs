@@ -9,9 +9,10 @@ public class EventProcessor
     private readonly BlockingCollection<Event> _inputQueue;
     private readonly BlockingCollection<Event> _outputQueue;
     private CancellationTokenSource _cts;
-    private static int _eventProcessed = 0;
+    private int _eventProcessed = 0;
 
     public int Id => _id;
+    public int EventsProcessed => _eventProcessed;
 
     public EventProcessor(
         int id,

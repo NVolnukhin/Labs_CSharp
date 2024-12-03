@@ -6,10 +6,10 @@ class Program
     {
         var config = new Configuration
         {
-            EmitterDelays = [2000, 1000], // Задержки генерации событий (мс)
-            ProcessorDelays = [500, 300], // Задержки обработки
+            EmitterDelays = [2000, 3000, 1500], // Задержки генерации событий (мс)
+            ProcessorDelays = [5000, 3700, 6000, 9000], // Задержки обработки
             RecieverDelays = [700, 500], //Задержки получения
-            SimulationDuration = 1000 // Продолжительность моделирования (мс)
+            SimulationDuration = 20000 // Продолжительность моделирования (мс)
         };
 
         var system = new ConveyorSystem(config);

@@ -8,10 +8,10 @@ public class EventReciever
     private readonly int _processingDelay;
     private readonly BlockingCollection<Event> _queue;
     private CancellationTokenSource _cts;
-    private static int _eventsProcessed = 0;
+    private int _eventsProcessed = 0;
 
     public int Id => _id;
-    public static int EventsProcessed => _eventsProcessed;
+    public int EventsProcessed => _eventsProcessed;
 
     public EventReciever(int id, int processingDelay, BlockingCollection<Event> queue)
     {
