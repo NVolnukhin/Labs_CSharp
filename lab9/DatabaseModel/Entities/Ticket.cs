@@ -2,6 +2,11 @@ namespace DatabaseModel;
 
 public class Ticket
 {
+    public Ticket()
+    {
+        throw new MemberAccessException("Use '.Create' method to create a new ticket.");
+    }
+    
     private Ticket(Guid id, Guid exhibitionId, Exhibition exhibition, Guid visitorId, Visitor visitor)
     {
         Id = id;
