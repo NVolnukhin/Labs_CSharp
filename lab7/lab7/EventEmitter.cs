@@ -37,6 +37,5 @@ public class EventEmitter
     private static void Log(string message)
     {
         Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} - {message}");
-        //File.AppendAllText("log.txt", $"{DateTime.Now:HH:mm:ss.fff} - {message}\n");
     }
 }
