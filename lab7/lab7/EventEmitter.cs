@@ -28,16 +28,11 @@ public class EventEmitter
             {
                 var newEvent = new Event(Interlocked.Increment(ref _eventsGenerated));
                 _queue.Add(newEvent);
-                Log($"Эмиттер {_id} сгенерировал событие {newEvent}");
+                Log.Write($"Эмиттер {_id} сгенерировал событие {newEvent}");
                 await Task.Delay(_interval, _cts.Token);
             }
         });
     }
 
     public void Stop() => _cts.Cancel();
-
-    private static void Log(string message)
-    {
-        Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} - {message}");
-    }
 }

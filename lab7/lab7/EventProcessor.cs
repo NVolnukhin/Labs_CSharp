@@ -39,15 +39,10 @@ public class EventProcessor
 
     private async Task ProcessEvent(Event eventItem)
     {
-        Log($"Обработчик {_id} начал обработку события {eventItem}");
+        Log.Write($"Обработчик {_id} начал обработку события {eventItem}");
         await Task.Delay(_processingDelay, _cts.Token);
         Interlocked.Increment(ref _eventsProcessed);
-        Log($"Обработчик {_id} завершил обработку события {eventItem}");
-    }
-
-    private static void Log(string message)
-    {
-        Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} - {message}");
+        Log.Write($"Обработчик {_id} завершил обработку события {eventItem}");
     }
 }
 
