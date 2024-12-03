@@ -1,14 +1,17 @@
 ﻿using Core;
 using DatabaseContext;
 using DatabaseModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 class Program
 {
-    static async Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var serviceProvider = new ServiceCollection()
-            .AddDbContext<AppDbContext>()
+            .AddDbContext<AppDbContext>(options => {
+                options.UseNpgsql("Host=localhost;Port=5432;Database=lab9db;Username=postgres;Password=123");
+            })
             .AddScoped<ExhibitionFacade>()
             .BuildServiceProvider();
 

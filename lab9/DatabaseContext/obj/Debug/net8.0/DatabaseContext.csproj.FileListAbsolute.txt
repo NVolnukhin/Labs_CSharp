@@ -14,3 +14,5 @@
 /Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/refint/DatabaseContext.dll
 /Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.pdb
 /Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/ref/DatabaseContext.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/bin/Debug/net8.0/DatabaseContext.runtimeconfig.json
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.genruntimeconfig.cache

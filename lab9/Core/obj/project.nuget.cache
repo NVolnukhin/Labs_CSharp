@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mBO2uOeyY64=",
+  "dgSpecHash": "bEMiy8ZYVlM=",
   "success": true,
   "projectFilePath": "/Users/nikitavolnuhin/Labs_cs/lab9/Core/Core.csproj",
   "expectedPackageFiles": [
@@ -17,7 +17,7 @@
     "/Users/nikitavolnuhin/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.2/microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
     "/Users/nikitavolnuhin/.nuget/packages/microsoft.extensions.options/8.0.2/microsoft.extensions.options.8.0.2.nupkg.sha512",
     "/Users/nikitavolnuhin/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
-    "/Users/nikitavolnuhin/.nuget/packages/npgsql/9.0.1/npgsql.9.0.1.nupkg.sha512",
+    "/Users/nikitavolnuhin/.nuget/packages/npgsql/8.0.6/npgsql.8.0.6.nupkg.sha512",
     "/Users/nikitavolnuhin/.nuget/packages/npgsql.entityframeworkcore.postgresql/8.0.11/npgsql.entityframeworkcore.postgresql.8.0.11.nupkg.sha512"
   ],
   "logs": []
