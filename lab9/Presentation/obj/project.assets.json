@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/nikitavolnuhin/Labs_cs/lab9/lab9/lab9.csproj",
-      "projectName": "lab9",
-      "projectPath": "/Users/nikitavolnuhin/Labs_cs/lab9/lab9/lab9.csproj",
+      "projectUniqueName": "/Users/nikitavolnuhin/Labs_cs/lab9/Presentation/Presentation.csproj",
+      "projectName": "Presentation",
+      "projectPath": "/Users/nikitavolnuhin/Labs_cs/lab9/Presentation/Presentation.csproj",
       "packagesPath": "/Users/nikitavolnuhin/.nuget/packages/",
-      "outputPath": "/Users/nikitavolnuhin/Labs_cs/lab9/lab9/obj/",
+      "outputPath": "/Users/nikitavolnuhin/Labs_cs/lab9/Presentation/obj/",
       "projectStyle": "PackageReference",
       "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
