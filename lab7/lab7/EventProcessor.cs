@@ -11,6 +11,7 @@ public class EventProcessor
     private static int _eventsProcessed = 0;
 
     public int Id => _id;
+    public static int EventsProcessed => _eventsProcessed;
 
     public EventProcessor(int id, int processingDelay, BlockingCollection<Event> queue)
     {
