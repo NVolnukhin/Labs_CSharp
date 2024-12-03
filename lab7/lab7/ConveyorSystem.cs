@@ -9,14 +9,17 @@ public class ConveyorSystem
     private readonly BlockingCollection<Event> _billingQueue = new();
     private readonly List<EventProcessor> _processors = new();
     private readonly List<EventReciever> _recievers = new();
-    private readonly EventEmitter _emitter;
+    private readonly List<EventEmitter> _emitters = new();
 
     public ConveyorSystem(Configuration config)
     {
         _config = config;
         
         // Создаем эмиттер (стекольный завод)
-        _emitter = new EventEmitter(1, config.EmitterInterval, _orderQueue);
+        for (int i = 0; i < config.EmitterDelays.Length; i++)
+        {
+            _emitters.Add(new EventEmitter(i + 1, config.EmitterDelays[i], _orderQueue));
+        }
         
         // Создаем обработчики (сборщики поставок)
         for (int i = 0; i < config.ProcessorDelays.Length; i++)
@@ -36,7 +39,7 @@ public class ConveyorSystem
         Console.WriteLine("Запуск системы...");
 
         // Запуск эмиттера и обработчиков
-        var emitterTask = _emitter.StartAsync();
+        var emittersTask = _emitters.Select(e => e.StartAsync()).ToArray();
         var processorTasks = _processors.Select(p => p.StartAsync()).ToArray();
         var recieversTask = _recievers.Select(r => r.StartAsync()).ToArray();
         
@@ -44,15 +47,23 @@ public class ConveyorSystem
         await Task.Delay(_config.SimulationDuration);
 
         // Завершение работы
-        _emitter.Stop();
+        foreach (var emitter in _emitters)
+        {
+            emitter.Stop();
+        }
         foreach (var processor in _processors)
         {
             processor.Stop();
         }
+        foreach (var reciever in _recievers)
+        {
+            reciever.Stop();
+        }
 
         // Ждем завершения всех задач
-        await Task.WhenAll(emitterTask);
+        await Task.WhenAll(emittersTask);
         await Task.WhenAll(processorTasks);
+        await Task.WhenAll(recieversTask);
 
         Console.WriteLine("Система завершила работу.");
         LogMetrics();
@@ -61,7 +72,7 @@ public class ConveyorSystem
     private void LogMetrics()
     {
         Console.WriteLine("Сводка:");
-        Console.WriteLine($"Всего сгенерировано событий: {_emitter.EventsGenerated}");
+        Console.WriteLine($"Всего сгенерировано событий: {EventEmitter.EventsGenerated}");
         foreach (var processor in _processors)
         {
             Console.WriteLine($"Обработчик {processor.Id}: Обработано событий: {EventReciever.EventsProcessed}");
