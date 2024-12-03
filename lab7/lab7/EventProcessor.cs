@@ -6,18 +6,24 @@ public class EventProcessor
 {
     private readonly int _id;
     private readonly int _processingDelay;
-    private readonly BlockingCollection<Event> _queue;
+    private readonly BlockingCollection<Event> _inputQueue;
+    private readonly BlockingCollection<Event> _outputQueue;
     private CancellationTokenSource _cts;
-    private static int _eventsProcessed = 0;
+    private int _eventProcessed = 0;
 
     public int Id => _id;
-    public static int EventsProcessed => _eventsProcessed;
+    public int EventsProcessed => _eventProcessed;
 
-    public EventProcessor(int id, int processingDelay, BlockingCollection<Event> queue)
+    public EventProcessor(
+        int id,
+        int processingDelay,
+        BlockingCollection<Event> inputQueue,
+        BlockingCollection<Event> outputQueue)
     {
         _id = id;
         _processingDelay = processingDelay;
-        _queue = queue;
+        _inputQueue = inputQueue;
+        _outputQueue = outputQueue;
         _cts = new CancellationTokenSource();
     }
 
@@ -25,12 +31,20 @@ public class EventProcessor
     {
         return Task.Run(async () =>
         {
-            while (!_cts.Token.IsCancellationRequested)
+            try
             {
-                if (_queue.TryTake(out var eventItem, Timeout.Infinite, _cts.Token))
+                while (!_cts.Token.IsCancellationRequested)
                 {
-                    await ProcessEvent(eventItem);
+                    if (_inputQueue.TryTake(out var eventItem, Timeout.Infinite, _cts.Token))
+                    {
+                        await ProcessEvent(eventItem);
+                    }
                 }
+
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Write($"Доставки заказов были отменены.");
             }
         });
     }
@@ -39,15 +53,13 @@ public class EventProcessor
 
     private async Task ProcessEvent(Event eventItem)
     {
-        Log($"Обработчик {_id} начал обработку события {eventItem}");
+        Log.Write($"Курьерская компания {_id} начала доставку заказа {eventItem}");
         await Task.Delay(_processingDelay, _cts.Token);
-        Interlocked.Increment(ref _eventsProcessed);
-        Log($"Обработчик {_id} завершил обработку события {eventItem}");
-    }
+        Interlocked.Increment(ref _eventProcessed);
+        Log.Write($"Курьерская компания {_id} завершила доставку заказа {eventItem}");
 
-    private static void Log(string message)
-    {
-        Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} - {message}");
+        // Передаем событие в следующую очередь
+        _outputQueue.Add(eventItem);
+        Log.Write($"Курьерская компания {_id} передала заказ {eventItem} получателю");
     }
 }
-

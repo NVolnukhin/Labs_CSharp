@@ -5,22 +5,33 @@ namespace lab7;
 public class ConveyorSystem
 {
     private readonly Configuration _config;
-    private readonly BlockingCollection<Event> _eventQueue = new();
+    private readonly BlockingCollection<Event> _orderQueue = new();
+    private readonly BlockingCollection<Event> _billingQueue = new();
     private readonly List<EventProcessor> _processors = new();
-    private readonly EventEmitter _emitter;
+    private readonly List<EventReciever> _recievers = new();
+    private readonly List<EventEmitter> _emitters = new();
 
     public ConveyorSystem(Configuration config)
     {
         _config = config;
-
-        // Создаем обработчики
-        for (int i = 0; i < config.ProcessorDelays.Length; i++)
+        
+        // Создаем эмиттер (стекольный завод)
+        for (int i = 0; i < config.EmitterDelays.Length; ++i)
         {
-            _processors.Add(new EventProcessor(i + 1, config.ProcessorDelays[i], _eventQueue));
+            _emitters.Add(new EventEmitter(i + 1, config.EmitterDelays[i], _orderQueue));
         }
-
-        // Создаем эмиттер
-        _emitter = new EventEmitter(1, config.EmitterInterval, _eventQueue);
+        
+        // Создаем обработчики (сборщики поставок)
+        for (int i = 0; i < config.ProcessorDelays.Length; ++i)
+        {
+            _processors.Add(new EventProcessor(i + 1, config.ProcessorDelays[i], _orderQueue, _billingQueue));
+        }
+        
+        // Создаем получателей (поставок)
+        for (int i = 0; i < config.RecieverDelays.Length; ++i)
+        {
+            _recievers.Add(new EventReciever(i + 1, config.RecieverDelays[i], _billingQueue));
+        }
     }
 
     public async Task StartAsync()
@@ -28,34 +39,52 @@ public class ConveyorSystem
         Console.WriteLine("Запуск системы...");
 
         // Запуск эмиттера и обработчиков
-        var emitterTask = _emitter.StartAsync();
+        var emittersTask = _emitters.Select(e => e.StartAsync()).ToArray();
         var processorTasks = _processors.Select(p => p.StartAsync()).ToArray();
-
+        var recieversTask = _recievers.Select(r => r.StartAsync()).ToArray();
+        
         // Ожидание завершения моделирования
         await Task.Delay(_config.SimulationDuration);
 
         // Завершение работы
-        _emitter.Stop();
+        foreach (var emitter in _emitters)
+        {
+            emitter.Stop();
+        }
         foreach (var processor in _processors)
         {
             processor.Stop();
         }
+        foreach (var reciever in _recievers)
+        {
+            reciever.Stop();
+        }
 
         // Ждем завершения всех задач
-        await Task.WhenAll(emitterTask);
+        await Task.WhenAll(emittersTask);
         await Task.WhenAll(processorTasks);
+        await Task.WhenAll(recieversTask);
 
-        Console.WriteLine("Система завершила работу.");
+        Log.Write("Система завершила работу.");
         LogMetrics();
     }
 
     private void LogMetrics()
     {
-        Console.WriteLine("Сводка:");
-        Console.WriteLine($"Всего сгенерировано событий: {_emitter.EventsGenerated}");
+        Console.WriteLine("\n------------------------------------Сводка------------------------------------\n");
+        foreach (var emitter in _emitters)
+        {
+            Console.WriteLine($"Стекольный завод {emitter.Id}: Выполнено заказов: {emitter.EventsGenerated}");
+        }
+        Console.WriteLine("\n");
         foreach (var processor in _processors)
         {
-            Console.WriteLine($"Обработчик {processor.Id}: Обработано событий: {EventProcessor.EventsProcessed}");
+            Console.WriteLine($"Курьерская компания {processor.Id}: Доставлено заказов: {processor.EventsProcessed}");
+        }
+        Console.WriteLine("\n");
+        foreach (var reciever in _recievers)
+        {
+            Console.WriteLine($"Получатель {reciever.Id}: Получено заказов: {reciever.EventsProcessed}");
         }
     }
 }
