@@ -35,7 +35,10 @@ public class ExhibitionFacade
     {
         var query = _context.Tickets
             .Where(ticket => ticket.ExhibitionId == exhibitionId)
-            .Join(_context.Visitors, ticket => ticket.VisitorId, visitor => visitor.Id,
+            .Join<Ticket, Visitor, object, double>(
+                _context.Visitors, 
+                ticket => ticket.VisitorId,
+                visitor => visitor.Id,
                 (ticket, visitor) => visitor.Discount)
             .DefaultIfEmpty(0);
         
