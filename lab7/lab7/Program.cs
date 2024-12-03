@@ -6,15 +6,13 @@ class Program
     {
         var config = new Configuration
         {
-            EmitterDelays = [2000, 1000], // Интервал генерации событий (мс)
+            EmitterDelays = [2000, 1000], // Задержки генерации событий (мс)
             ProcessorDelays = [500, 300], // Задержки обработки
-            RecieverDelays = [700, 500],
-            SimulationDuration = 10000 // Продолжительность моделирования (мс)
+            RecieverDelays = [700, 500], //Задержки получения
+            SimulationDuration = 1000 // Продолжительность моделирования (мс)
         };
 
         var system = new ConveyorSystem(config);
         await system.StartAsync();
     }
-    
-
 }

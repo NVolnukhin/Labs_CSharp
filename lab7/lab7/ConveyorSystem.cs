@@ -65,7 +65,7 @@ public class ConveyorSystem
         await Task.WhenAll(processorTasks);
         await Task.WhenAll(recieversTask);
 
-        Console.WriteLine("Система завершила работу.");
+        Log.Write("Система завершила работу.");
         LogMetrics();
     }
 

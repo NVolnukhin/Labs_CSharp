@@ -30,12 +30,20 @@ public class EventProcessor
     {
         return Task.Run(async () =>
         {
-            while (!_cts.Token.IsCancellationRequested)
+            try
             {
-                if (_inputQueue.TryTake(out var eventItem, Timeout.Infinite, _cts.Token))
+                while (!_cts.Token.IsCancellationRequested)
                 {
-                    await ProcessEvent(eventItem);
+                    if (_inputQueue.TryTake(out var eventItem, Timeout.Infinite, _cts.Token))
+                    {
+                        await ProcessEvent(eventItem);
+                    }
                 }
+
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Write($"Доставки заказов были отменены.");
             }
         });
     }
