@@ -1,0 +1,12 @@
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/bin/Debug/net8.0/DatabaseModel.deps.json
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/bin/Debug/net8.0/DatabaseModel.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/bin/Debug/net8.0/DatabaseModel.pdb
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/DatabaseModel.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/DatabaseModel.AssemblyInfoInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/DatabaseModel.AssemblyInfo.cs
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/DatabaseModel.csproj.CoreCompileInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/DatabaseModel.sourcelink.json
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/DatabaseModel.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/refint/DatabaseModel.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/DatabaseModel.pdb
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/Debug/net8.0/ref/DatabaseModel.dll

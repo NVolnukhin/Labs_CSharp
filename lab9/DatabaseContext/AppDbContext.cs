@@ -25,4 +25,7 @@ public class AppDbContext : DbContext
             .WithMany(v => v.Tickets)
             .HasForeignKey(t => t.VisitorId);
     }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+        => options.UseNpgsql("Host=localhost;Port=5432;Database=lab9db;Username=postgres;Password=123");
 }

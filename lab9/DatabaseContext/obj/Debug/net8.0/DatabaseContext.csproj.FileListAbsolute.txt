@@ -1,0 +1,16 @@
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/bin/Debug/net8.0/DatabaseContext.deps.json
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/bin/Debug/net8.0/DatabaseContext.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/bin/Debug/net8.0/DatabaseContext.pdb
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/bin/Debug/net8.0/DatabaseModel.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/bin/Debug/net8.0/DatabaseModel.pdb
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.csproj.AssemblyReference.cache
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.AssemblyInfoInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.AssemblyInfo.cs
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.csproj.CoreCompileInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.sourcelink.json
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/Database.E130DD82.Up2Date
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/refint/DatabaseContext.dll
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/DatabaseContext.pdb
+/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/Debug/net8.0/ref/DatabaseContext.dll
