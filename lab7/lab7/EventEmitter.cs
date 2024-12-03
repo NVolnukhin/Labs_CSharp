@@ -1,29 +1,42 @@
+using System.Collections.Concurrent;
+
 namespace lab7;
 
 public class EventEmitter
 {
-    private readonly int _emitterId;
-    private readonly int _intervalMs;
-    private readonly Random _random;
-    private readonly Queue _queue;
+    private readonly int _id;
+    private readonly int _interval;
+    private readonly BlockingCollection<Event> _queue;
+    private CancellationTokenSource _cts;
+    private static int _eventsGenerated = 0;
 
-    public EventEmitter(int emitterId, int intervalMs, Queue queue)
+    public EventEmitter(int id, int interval, BlockingCollection<Event> queue)
     {
-        _emitterId = emitterId;
-        _intervalMs = intervalMs;
+        _id = id;
+        _interval = interval;
         _queue = queue;
-        _random = new Random();
+        _cts = new CancellationTokenSource();
     }
 
-    public async Task StartAsync(CancellationToken token)
+    public Task StartAsync()
     {
-        int eventId = 0;
-        while (!token.IsCancellationRequested)
+        return Task.Run(async () =>
         {
-            await Task.Delay(_intervalMs + _random.Next(0, 1000), token);
-            var ev = new Event(eventId++);
-            _queue.Enqueue(ev);
-            Console.WriteLine($"{DateTime.Now} - Эмиттер {_emitterId} сгенерировал событие {ev.Id}");
-        }
+            while (!_cts.Token.IsCancellationRequested)
+            {
+                var newEvent = new Event(Interlocked.Increment(ref _eventsGenerated));
+                _queue.Add(newEvent);
+                Log($"Эмиттер {_id} сгенерировал событие {newEvent}");
+                await Task.Delay(_interval, _cts.Token);
+            }
+        });
+    }
+
+    public void Stop() => _cts.Cancel();
+
+    private static void Log(string message)
+    {
+        Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} - {message}");
+        //File.AppendAllText("log.txt", $"{DateTime.Now:HH:mm:ss.fff} - {message}\n");
     }
 }
