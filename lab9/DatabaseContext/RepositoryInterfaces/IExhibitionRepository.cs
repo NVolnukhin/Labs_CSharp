@@ -1,6 +1,6 @@
 namespace DatabaseContext.Interfaces;
 
-public class IExhibitionRepository
+public interface IExhibitionRepository
 {
-    
+    public Task Add(Exception exhibition);
 }
