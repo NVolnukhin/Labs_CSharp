@@ -1,4 +1,5 @@
-﻿using DatabaseContext;
+﻿using Core.Services;
+using DatabaseContext;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -15,31 +16,45 @@ public class ExhibitionFacade
     }
 
     // Сколько билетов продано на выставку
-    public async Task<int> GetTicketsSoldAsync(int exhibitionId)
+    public async Task<int> GetTicketsSoldAsync(string exhibitionName)
     {
-        return await _context.Tickets.CountAsync(t => t.ExhibitionId == exhibitionId);
+        var ticketsQuery =
+            from ticket in _context.Tickets
+            join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
+            where exhibition.Name == exhibitionName
+            select ticket;
+        
+        var amount = await ticketsQuery.CountAsync();
+
+        return amount;
     }
 
     // На сколько уникальных выставок сходил посетитель
-    public async Task<int> GetUniqueExhibitionsVisitedAsync(int visitorId)
+    public async Task<int> GetUniqueExhibitionsVisitedAsync(string visitorName)
     {
-        return await _context.Tickets
-            .Where(t => t.VisitorId == visitorId)
-            .Select(t => t.ExhibitionId)
-            .Distinct()
-            .CountAsync();
+        var exhibitionsQuery =
+            from ticket in _context.Tickets
+            join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
+            where visitor.FullName == visitorName
+            select visitor.Discount;
+        
+        var amount = await exhibitionsQuery.CountAsync();
+
+
+        return amount;
     }
 
     // Средний процент скидки на выставку
-    public async Task<double> GetAverageDiscountAsync(int exhibitionId)
+    public async Task<double> GetAverageDiscountAsync(string exhibitionName)
     {
-        var query = _context.Tickets
-            .Where(ticket => ticket.ExhibitionId == exhibitionId)
-            .Join(_context.Visitors, ticket => ticket.VisitorId, visitor => visitor.Id,
-                (ticket, visitor) => visitor.Discount)
-            .DefaultIfEmpty(0);
+        var discountsQuery =
+            from ticket in _context.Tickets
+            join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
+            join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
+            where exhibition.Name == exhibitionName
+            select visitor.Discount;
         
-        var discounts = await query.ToListAsync();
+        var discounts = await discountsQuery.ToListAsync();
 
         return discounts.Count != 0 ? discounts.Average() : 0.0;
     }
