@@ -6,7 +6,7 @@ public class ConveyorSystem
 {
     private readonly Configuration _config;
     private readonly BlockingCollection<Event> _eventQueue = new();
-    private readonly List<EventProcessor> _processors = new();
+    private readonly List<EventReciever> _processors = new();
     private readonly EventEmitter _emitter;
 
     public ConveyorSystem(Configuration config)
@@ -19,7 +19,7 @@ public class ConveyorSystem
         // Создаем обработчики (сборщики поставок)
         for (int i = 0; i < config.ProcessorDelays.Length; i++)
         {
-            _processors.Add(new EventProcessor(i + 1, config.ProcessorDelays[i], _eventQueue));
+            _processors.Add(new EventReciever(i + 1, config.ProcessorDelays[i], _eventQueue));
         }
     }
 
@@ -55,7 +55,7 @@ public class ConveyorSystem
         Console.WriteLine($"Всего сгенерировано событий: {_emitter.EventsGenerated}");
         foreach (var processor in _processors)
         {
-            Console.WriteLine($"Обработчик {processor.Id}: Обработано событий: {EventProcessor.EventsProcessed}");
+            Console.WriteLine($"Обработчик {processor.Id}: Обработано событий: {EventReciever.EventsProcessed}");
         }
     }
 }

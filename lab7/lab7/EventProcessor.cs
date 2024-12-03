@@ -6,18 +6,23 @@ public class EventProcessor
 {
     private readonly int _id;
     private readonly int _processingDelay;
-    private readonly BlockingCollection<Event> _queue;
+    private readonly BlockingCollection<Event> _inputQueue;
+    private readonly BlockingCollection<Event> _outputQueue;
     private CancellationTokenSource _cts;
-    private static int _eventsProcessed = 0;
+    private static int _eventProcessed = 0;
 
     public int Id => _id;
-    public static int EventsProcessed => _eventsProcessed;
 
-    public EventProcessor(int id, int processingDelay, BlockingCollection<Event> queue)
+    public EventProcessor(
+        int id,
+        int processingDelay,
+        BlockingCollection<Event> inputQueue,
+        BlockingCollection<Event> outputQueue)
     {
         _id = id;
         _processingDelay = processingDelay;
-        _queue = queue;
+        _inputQueue = inputQueue;
+        _outputQueue = outputQueue;
         _cts = new CancellationTokenSource();
     }
 
@@ -27,7 +32,7 @@ public class EventProcessor
         {
             while (!_cts.Token.IsCancellationRequested)
             {
-                if (_queue.TryTake(out var eventItem, Timeout.Infinite, _cts.Token))
+                if (_inputQueue.TryTake(out var eventItem, Timeout.Infinite, _cts.Token))
                 {
                     await ProcessEvent(eventItem);
                 }
@@ -41,8 +46,11 @@ public class EventProcessor
     {
         Log.Write($"Обработчик {_id} начал обработку события {eventItem}");
         await Task.Delay(_processingDelay, _cts.Token);
-        Interlocked.Increment(ref _eventsProcessed);
+        Interlocked.Increment(ref _eventProcessed);
         Log.Write($"Обработчик {_id} завершил обработку события {eventItem}");
+
+        // Передаем событие в следующую очередь
+        _outputQueue.Add(eventItem);
+        Log.Write($"Обработчик {_id} передал событие {eventItem} в следующую очередь");
     }
 }
-
