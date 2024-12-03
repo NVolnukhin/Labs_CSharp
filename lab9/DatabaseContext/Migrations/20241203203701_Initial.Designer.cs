@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DatabaseContext.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241203195733_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241203203701_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,15 +33,12 @@ namespace DatabaseContext.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -55,9 +52,6 @@ namespace DatabaseContext.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Discount")
-                        .HasColumnType("double precision");
 
                     b.Property<int>("ExhibitionId")
                         .HasColumnType("integer");
@@ -82,9 +76,8 @@ namespace DatabaseContext.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<double>("Discount")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("FullName")
                         .IsRequired()

@@ -1,6 +1,7 @@
 ﻿using DatabaseContext;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Core;
 
@@ -32,10 +33,13 @@ public class ExhibitionFacade
     // Средний процент скидки на выставку
     public async Task<double> GetAverageDiscountAsync(int exhibitionId)
     {
-        var discounts = await _context.Tickets
-            .Where(t => t.ExhibitionId == exhibitionId)
-            .Select(t => t.Discount)
-            .ToListAsync();
+        var query = _context.Tickets
+            .Where(ticket => ticket.ExhibitionId == exhibitionId)
+            .Join(_context.Visitors, ticket => ticket.VisitorId, visitor => visitor.Id,
+                (ticket, visitor) => visitor.Discount)
+            .DefaultIfEmpty(0);
+        
+        var discounts = await query.ToListAsync();
 
         return discounts.Count != 0 ? discounts.Average() : 0.0;
     }
