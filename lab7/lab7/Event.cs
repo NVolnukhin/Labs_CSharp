@@ -10,4 +10,9 @@ public class Event
         Id = id;
         CreatedAt = DateTime.Now;
     }
+
+    public override string ToString()
+    {
+        return $"Event {Id} (Создано: {CreatedAt:HH:mm:ss.fff})";
+    }
 }
