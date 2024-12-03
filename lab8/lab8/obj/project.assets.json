@@ -1,0 +1,95 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "LinearAlgebra/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/LinearAlgebra.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LinearAlgebra.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LinearAlgebra/1.0.0": {
+      "type": "project",
+      "path": "../LinearAlgebra/LinearAlgebra.csproj",
+      "msbuildProject": "../LinearAlgebra/LinearAlgebra.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "LinearAlgebra >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "/Users/nikitavolnuhin/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/nikitavolnuhin/Labs_cs/lab8/lab8/lab8.csproj",
+      "projectName": "lab8",
+      "projectPath": "/Users/nikitavolnuhin/Labs_cs/lab8/lab8/lab8.csproj",
+      "packagesPath": "/Users/nikitavolnuhin/.nuget/packages/",
+      "outputPath": "/Users/nikitavolnuhin/Labs_cs/lab8/lab8/obj/",
+      "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
+      "configFilePaths": [
+        "/Users/nikitavolnuhin/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/LinearAlgebra.csproj": {
+              "projectPath": "/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/LinearAlgebra.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

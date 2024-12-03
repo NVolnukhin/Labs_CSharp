@@ -1,0 +1,12 @@
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/bin/Debug/net8.0/LinearAlgebra.deps.json
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/bin/Debug/net8.0/LinearAlgebra.dll
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/bin/Debug/net8.0/LinearAlgebra.pdb
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/LinearAlgebra.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/LinearAlgebra.AssemblyInfoInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/LinearAlgebra.AssemblyInfo.cs
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/LinearAlgebra.csproj.CoreCompileInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/LinearAlgebra.sourcelink.json
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/LinearAlgebra.dll
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/refint/LinearAlgebra.dll
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/LinearAlgebra.pdb
+/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/obj/Debug/net8.0/ref/LinearAlgebra.dll

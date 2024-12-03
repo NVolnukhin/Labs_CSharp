@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lab8", "lab8\lab8.csproj", "{36D1346D-1665-436D-8738-F4536BEA9B14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinearAlgebra", "LinearAlgebra\LinearAlgebra.csproj", "{CD700002-2BDD-4CBC-8980-812FF441D2AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathVectorUnitTests", "MathVectorUnitTests\MathVectorUnitTests.csproj", "{811D8408-EB10-4CC2-930C-C9C6052E3D5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36D1346D-1665-436D-8738-F4536BEA9B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36D1346D-1665-436D-8738-F4536BEA9B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36D1346D-1665-436D-8738-F4536BEA9B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36D1346D-1665-436D-8738-F4536BEA9B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD700002-2BDD-4CBC-8980-812FF441D2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD700002-2BDD-4CBC-8980-812FF441D2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD700002-2BDD-4CBC-8980-812FF441D2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD700002-2BDD-4CBC-8980-812FF441D2AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{811D8408-EB10-4CC2-930C-C9C6052E3D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{811D8408-EB10-4CC2-930C-C9C6052E3D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{811D8408-EB10-4CC2-930C-C9C6052E3D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{811D8408-EB10-4CC2-930C-C9C6052E3D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
