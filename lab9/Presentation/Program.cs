@@ -66,22 +66,22 @@ class Program
 
                 case "4":
                     Console.Write("Enter Exhibition ID: ");
-                    var exhibitionIdForTickets = int.Parse(Console.ReadLine()!);
-                    var ticketsSold = await facade.GetTicketsSoldAsync(exhibitionIdForTickets);
+                    var exhibitionNameForTickets = Console.ReadLine()!;
+                    var ticketsSold = await facade.GetTicketsSoldAsync(exhibitionNameForTickets);
                     Console.WriteLine($"Tickets Sold: {ticketsSold}");
                     break;
 
                 case "5":
                     Console.Write("Enter Visitor ID: ");
-                    var visitorIdForExhibitions = int.Parse(Console.ReadLine()!);
-                    var uniqueExhibitions = await facade.GetUniqueExhibitionsVisitedAsync(visitorIdForExhibitions);
+                    var visitorFullnameForExhibitions = Console.ReadLine()!;
+                    var uniqueExhibitions = await facade.GetUniqueExhibitionsVisitedAsync(visitorFullnameForExhibitions);
                     Console.WriteLine($"Unique Exhibitions: {uniqueExhibitions}");
                     break;
 
                 case "6":
                     Console.Write("Enter Exhibition ID: ");
-                    var exhibitionIdForDiscount = int.Parse(Console.ReadLine()!);
-                    var avgDiscount = await facade.GetAverageDiscountAsync(exhibitionIdForDiscount);
+                    var exhibitionNameForDiscount = Console.ReadLine()!;
+                    var avgDiscount = await facade.GetAverageDiscountAsync(exhibitionNameForDiscount);
                     Console.WriteLine($"Average Discount: {avgDiscount:F2}%");
                     break;
 
