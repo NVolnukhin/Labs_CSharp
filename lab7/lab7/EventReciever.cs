@@ -39,10 +39,10 @@ public class EventReciever
 
     private async Task ProcessEvent(Event eventItem)
     {
-        Log.Write($"Обработчик {_id} начал обработку события {eventItem}");
+        Log.Write($"Получатель {_id} начал приемку заказа {eventItem}");
         await Task.Delay(_processingDelay, _cts.Token);
         Interlocked.Increment(ref _eventsProcessed);
-        Log.Write($"Обработчик {_id} завершил обработку события {eventItem}");
+        Log.Write($"Получатель {_id} завершил приемку заказа {eventItem}");
     }
 }
 

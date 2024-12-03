@@ -44,13 +44,13 @@ public class EventProcessor
 
     private async Task ProcessEvent(Event eventItem)
     {
-        Log.Write($"Обработчик {_id} начал обработку события {eventItem}");
+        Log.Write($"Курьерская компания {_id} начала доставку заказа {eventItem}");
         await Task.Delay(_processingDelay, _cts.Token);
         Interlocked.Increment(ref _eventProcessed);
-        Log.Write($"Обработчик {_id} завершил обработку события {eventItem}");
+        Log.Write($"Курьерская компания {_id} завершила доставку заказа {eventItem}");
 
         // Передаем событие в следующую очередь
         _outputQueue.Add(eventItem);
-        Log.Write($"Обработчик {_id} передал событие {eventItem} в следующую очередь");
+        Log.Write($"Курьерская компания {_id} передала заказ {eventItem} получателю");
     }
 }

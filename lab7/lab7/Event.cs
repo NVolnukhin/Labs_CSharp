@@ -13,6 +13,6 @@ public class Event
 
     public override string ToString()
     {
-        return $"Event {Id} (Создано: {CreatedAt:HH:mm:ss.fff})";
+        return $"<Заказ {Id}> (Создан: {CreatedAt:HH:mm:ss.fff})";
     }
 }

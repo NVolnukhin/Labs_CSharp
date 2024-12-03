@@ -28,7 +28,7 @@ public class EventEmitter
             {
                 var newEvent = new Event(Interlocked.Increment(ref _eventsGenerated));
                 _queue.Add(newEvent);
-                Log.Write($"Эмиттер {_id} сгенерировал событие {newEvent}");
+                Log.Write($"Стекольный завод {_id} выполнил заказ {newEvent}");
                 await Task.Delay(_interval, _cts.Token);
             }
         });
