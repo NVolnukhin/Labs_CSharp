@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "LinearAlgebra/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/LinearAlgebra.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LinearAlgebra.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "LinearAlgebra/1.0.0": {
+      "type": "project",
+      "path": "../LinearAlgebra/LinearAlgebra.csproj",
+      "msbuildProject": "../LinearAlgebra/LinearAlgebra.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "LinearAlgebra >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/Users/nikitavolnuhin/.nuget/packages/": {}
@@ -32,7 +51,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/LinearAlgebra.csproj": {
+              "projectPath": "/Users/nikitavolnuhin/Labs_cs/lab8/LinearAlgebra/LinearAlgebra.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
