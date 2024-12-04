@@ -13,7 +13,6 @@
         "packagesPath": "/Users/nikitavolnuhin/.nuget/packages/",
         "outputPath": "/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseContext/obj/",
         "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
           "/Users/nikitavolnuhin/.nuget/NuGet/NuGet.Config"
         ],
@@ -108,7 +107,6 @@
         "packagesPath": "/Users/nikitavolnuhin/.nuget/packages/",
         "outputPath": "/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/",
         "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
           "/Users/nikitavolnuhin/.nuget/NuGet/NuGet.Config"
         ],
