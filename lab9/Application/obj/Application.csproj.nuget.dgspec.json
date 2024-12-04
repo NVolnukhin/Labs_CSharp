@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/DatabaseModel.csproj": {}
+    "/Users/nikitavolnuhin/Labs_cs/lab9/Application/Application.csproj": {}
   },
   "projects": {
-    "/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/DatabaseModel.csproj": {
+    "/Users/nikitavolnuhin/Labs_cs/lab9/Application/Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/DatabaseModel.csproj",
-        "projectName": "DatabaseModel",
-        "projectPath": "/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/DatabaseModel.csproj",
+        "projectUniqueName": "/Users/nikitavolnuhin/Labs_cs/lab9/Application/Application.csproj",
+        "projectName": "Application",
+        "projectPath": "/Users/nikitavolnuhin/Labs_cs/lab9/Application/Application.csproj",
         "packagesPath": "/Users/nikitavolnuhin/.nuget/packages/",
-        "outputPath": "/Users/nikitavolnuhin/Labs_cs/lab9/DatabaseModel/obj/",
+        "outputPath": "/Users/nikitavolnuhin/Labs_cs/lab9/Application/obj/",
         "projectStyle": "PackageReference",
         "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
