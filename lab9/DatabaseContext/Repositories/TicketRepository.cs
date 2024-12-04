@@ -18,15 +18,23 @@ public class TicketRepository
         await _appDbContext.SaveChangesAsync();
     }
     
-    public async Task Update(Guid ticketId, Guid exhibitionId, Exhibition exhibition, Guid visitorId, Visitor visitor)
+    public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price) //TODO
     {
+        var exhibition = await _appDbContext.Exhibitions
+            .FirstOrDefaultAsync(exhibition => exhibition.Id == exhibitionId);
+        
+        var visitor = await _appDbContext.Visitors
+            .FirstOrDefaultAsync(visitor => visitor.Id == visitorId);
+        
+        
         await _appDbContext.Tickets
             .Where(t => t.Id == ticketId)
             .ExecuteUpdateAsync(t => t
                 .SetProperty(p => p.ExhibitionId, exhibitionId)
                 .SetProperty(p => p.Exhibition, exhibition)
-                .SetProperty(p => p.Visitor, visitor)
                 .SetProperty(p => p.VisitorId, visitorId)
+                .SetProperty(p => p.Visitor, visitor)
+                .SetProperty(p => p.Price, price)
             );
     }
 
