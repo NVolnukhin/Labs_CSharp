@@ -18,4 +18,14 @@ public class TicketService
 
         await _ticketRepository.Add(ticket);
     }
+    
+    public async Task Update(Guid ticketId, Exhibition exhibition, Guid visitorId, Visitor visitor)
+    {
+        await _ticketRepository.Update(ticketId, exhibition, visitorId, visitor);
+    }
+
+    public async Task Delete(Guid ticketId)
+    {
+        await _ticketRepository.Delete(ticketId);
+    }
 }

@@ -18,4 +18,14 @@ public class VisitorService
 
         await _visitorRepository.Add(visitor);
     }
+    
+    public async Task Update(Guid visitorId, string fullName, double discount)
+    {
+        await _visitorRepository.Update(visitorId, fullName, discount);
+    }
+
+    public async Task Delete(Guid visitorId)
+    {
+        await _visitorRepository.Delete(visitorId);
+    }
 }

@@ -18,4 +18,14 @@ public class ExhibitionService
 
         await _exhibitionRepository.Add(exhibition);
     }
+    
+    public async Task Update(Guid ehibitionId, string name, DateTime date)
+    {
+        await _exhibitionRepository.Update(ehibitionId, name, date);
+    }
+
+    public async Task Delete(Guid ehibitionId)
+    {
+        await _exhibitionRepository.Delete(ehibitionId);
+    }
 }
