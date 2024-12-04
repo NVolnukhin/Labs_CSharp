@@ -19,9 +19,9 @@ public class TicketService
         await _ticketRepository.Add(ticket);
     }
     
-    public async Task Update(Guid ticketId, Exhibition exhibition, Guid visitorId, Visitor visitor)
+    public async Task Update(Guid ticketId, Guid exhibitionId, Exhibition exhibition, Guid visitorId, Visitor visitor)
     {
-        await _ticketRepository.Update(ticketId, exhibition, visitorId, visitor);
+        await _ticketRepository.Update(ticketId, exhibitionId, exhibition, visitorId, visitor);
     }
 
     public async Task Delete(Guid ticketId)
