@@ -16,11 +16,10 @@ class Program
             int endYear = args.Length > 3 ? int.Parse(args[3]) : 2021;
             int initialPopulation = args.Length > 4 ? int.Parse(args[4]) : 130000000;
 
-            Console.WriteLine($"Starting simulation from {startYear} to {endYear}...");
+            Console.WriteLine($"Начало симуляции с {startYear} года по {endYear} год...");
 
             // Загрузка данных
             var initialPopulationData = FileOperations.LoadInitialPopulation(initialPopulationFile);
-            Console.WriteLine($"Initial population readed");
             var deathRates = FileOperations.LoadDeathRates(deathRatesFile);
 
             // Создание движка моделирования
@@ -30,13 +29,14 @@ class Program
             var results = engine.RunSimulation(startYear, endYear);
 
             // Сохранение результатов
-            FileOperations.SaveResults(results, "SimulationResults.csv");
+            var outputFilePath = "/Users/nikitavolnuhin/Labs_cs/lab6/SimulationResults.csv";
+            FileOperations.SaveResults(results, outputFilePath);
 
-            Console.WriteLine("Simulation completed successfully. Results saved to 'SimulationResults.csv'.");
+            Console.WriteLine($"Симуляция завершена. Результаты сохранены в {outputFilePath}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}");
+            Console.WriteLine($"Возникла ошибка: {ex.Message}");
         }
     }
 }
