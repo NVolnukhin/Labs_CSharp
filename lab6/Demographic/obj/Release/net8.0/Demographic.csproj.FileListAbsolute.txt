@@ -1,0 +1,12 @@
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/bin/Release/net8.0/Demographic.deps.json
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/bin/Release/net8.0/Demographic.dll
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/bin/Release/net8.0/Demographic.pdb
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/Demographic.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/Demographic.AssemblyInfoInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/Demographic.AssemblyInfo.cs
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/Demographic.csproj.CoreCompileInputs.cache
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/Demographic.sourcelink.json
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/Demographic.dll
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/refint/Demographic.dll
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/Demographic.pdb
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/obj/Release/net8.0/ref/Demographic.dll

@@ -1,47 +1,38 @@
-namespace Demographic;
+using Demographic.FileOperations;
 
+/// <summary>
+/// Класс, представляющий человека.
+/// </summary>
 public class Person
 {
-    public int BirthYear { get; private set; }
-    public bool IsAlive { get; private set; } = true;
-    public bool IsFemale { get; private set; }
-    public event EventHandler<int> ChildBirth;
+    public int Age { get; private set; }
+    public Gender Gender { get; }
+    public bool IsAlive { get; private set; }
+    public int BirthYear { get; }
+    public int? DeathYear { get; private set; }
 
-    public Person(int birthYear, bool isFemale)
+    public Person(int age, Gender gender)
     {
-        BirthYear = birthYear;
-        IsFemale = isFemale;
+        Age = age;
+        Gender = gender;
+        IsAlive = true;
     }
 
-    public void OnYearPassed(int currentYear)
+    /// <summary>
+    /// Обрабатывает событие "новый год".
+    /// </summary>
+    public void OnYearTick(int currentYear, List<DeathRate> deathRates)
     {
         if (!IsAlive) return;
 
-        int age = currentYear - BirthYear;
-        // Логика смерти
-        if (ShouldDie(age))
-            IsAlive = false;
+        Age++;
+        var deathRate = deathRates.FirstOrDefault(dr => dr.StartAge <= Age && dr.EndAge >= Age);
 
-        // Логика рождения ребенка
-        if (IsFemale && age >= 18 && age <= 45 && IsAlive)
+        if (deathRate != null && ProbabilityCalculator.IsEventHappened(
+                Gender == Gender.Male ? deathRate.MaleDeathRate : deathRate.FemaleDeathRate))
         {
-            if (new Random().NextDouble() < 0.151) // Вероятность рождения
-                ChildBirth?.Invoke(this, currentYear);
+            IsAlive = false;
+            DeathYear = currentYear;
         }
     }
-
-    private readonly MortalityTable mortalityTable = new MortalityTable(new List<MortalityRule>()); // Add actual rules
-
-    private bool ShouldDie(int age)
-    {
-        // Получить вероятность смерти для данного возраста и пола
-        double probability = mortalityTable.GetMortalityProbability(age, IsFemale);
-
-        // Генерация случайного числа для проверки
-        double randomValue = Random.Shared.NextDouble();
-
-        // Умирает ли человек
-        return randomValue < probability;
-    }
-
 }

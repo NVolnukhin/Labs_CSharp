@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 
 namespace Demographic.FileOperations;
 
@@ -16,7 +12,7 @@ public static class FileOperations
     public static Dictionary<int, double> LoadInitialPopulation(string filePath)
     {
         if (!File.Exists(filePath))
-            throw new FileNotFoundException($"Initial population file not found: {filePath}");
+            throw new FileNotFoundException($"Файл с первоначальным возрастным составом не найден: {filePath}");
 
         var initialPopulation = new Dictionary<int, double>();
 
@@ -43,7 +39,7 @@ public static class FileOperations
     public static List<DeathRate> LoadDeathRates(string filePath)
     {
         if (!File.Exists(filePath))
-            throw new FileNotFoundException($"Death rates file not found: {filePath}");
+            throw new FileNotFoundException($"Файл с вероятностями смертей не найден: {filePath}");
 
         var deathRates = new List<DeathRate>();
 
