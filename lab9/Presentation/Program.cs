@@ -1,5 +1,7 @@
 ﻿using Core;
+using Core.Services;
 using DatabaseContext;
+using DatabaseContext.Repositories;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,44 +11,40 @@ class Program
     private static async Task Main(string[] args)
     {
         var serviceProvider = new ServiceCollection()
-            .AddDbContext<AppDbContext>(options => {
-                options.UseNpgsql("Host=localhost;Port=5432;Database=lab9db;Username=postgres;Password=123");
-            })
+            .AddDbContext<AppDbContext>(
+                options => 
+                {
+                    options.UseNpgsql("Host=localhost;Port=5432;Database=lab9db;Username=postgres;Password=123");
+                })
+            
             .AddScoped<ExhibitionFacade>()
             .BuildServiceProvider();
-
+        
         var facade = serviceProvider.GetService<ExhibitionFacade>();
 
         while (true)
         {
-            Console.WriteLine("1. Add Exhibition");
-            Console.WriteLine("2. Add Visitor");
-            Console.WriteLine("3. Add Ticket");
-            Console.WriteLine("4. Tickets Sold for Exhibition");
-            Console.WriteLine("5. Unique Exhibitions Visited by Visitor");
-            Console.WriteLine("6. Average Discount for Exhibition");
-            Console.WriteLine("7. Exit");
+            Console.WriteLine("1. Добавить выставку");
+            Console.WriteLine("2. Добавить посетителя");
+            Console.WriteLine("3. Добавить билет");
+            Console.WriteLine("4. Количество билетов, проданных на выставку");
+            Console.WriteLine("5. Количество выставок, посещенных опредленным человеком");
+            Console.WriteLine("6. Средняя скидка на выставку");
+            Console.WriteLine("7. Выход");
             var choice = Console.ReadLine();
 
             switch (choice)
             {
                 case "1":
-                    Console.Write("Enter Exhibition Name: ");
-                    var name = Console.ReadLine();
-                    Console.Write("Enter Start Date (yyyy-MM-dd): ");
-                    var startDate = DateTime.Parse(Console.ReadLine()!);
-                    Console.Write("Enter End Date (yyyy-MM-dd): ");
-                    var endDate = DateTime.Parse(Console.ReadLine()!);
-
-                    // Save Exhibition (Пример сохранения вручную)
-                    // ...
+                    facade.AddExhibition();
+                    
                     break;
 
                 case "2":
                     Console.Write("Enter Visitor Name: ");
                     var visitorName = Console.ReadLine();
                     Console.Write("Enter Visitor Email: ");
-                    var email = Console.ReadLine();
+                    var email = Console.ReadLine(); 
 
                     // Save Visitor (Пример сохранения вручную)
                     // ...

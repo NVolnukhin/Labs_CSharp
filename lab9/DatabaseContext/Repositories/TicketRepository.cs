@@ -18,7 +18,7 @@ public class TicketRepository
         await _appDbContext.SaveChangesAsync();
     }
     
-    public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price) //TODO
+    public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price)
     {
         var exhibition = await _appDbContext.Exhibitions
             .FirstOrDefaultAsync(exhibition => exhibition.Id == exhibitionId);

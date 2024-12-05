@@ -1,5 +1,6 @@
 ﻿using Core.Services;
 using DatabaseContext;
+using DatabaseContext.Repositories;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -9,10 +10,39 @@ namespace Core;
 public class ExhibitionFacade
 {
     private readonly AppDbContext _context;
+    //private readonly ExhibitionRepository _exhibitionRepository;
+    //private readonly VisitorRepository _visitorRepository;
+    //private readonly TicketRepository _ticketRepository;
 
     public ExhibitionFacade(AppDbContext context)
     {
         _context = context;
+    }
+    
+    public async Task AddExhibition()
+    {
+        try
+        {
+            Console.Write("Введите название выставки: ");
+            var name = Console.ReadLine();
+            Console.Write("Enter Start Date (yyyy-MM-dd): ");
+            var date = DateTime.Parse(Console.ReadLine());
+                        
+            var ex = Exhibition.Create(name, date);
+            Console.WriteLine($"ex {ex.Id} created");
+            
+            _context.Exhibitions.Add(ex);
+            await _context.SaveChangesAsync();
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Неверный формат вводимых данных");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     // Сколько билетов продано на выставку

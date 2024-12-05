@@ -1,3 +1,4 @@
+using DatabaseContext;
 using DatabaseContext.Interfaces;
 using DatabaseModel;
 
@@ -19,13 +20,13 @@ public class ExhibitionService
         await _exhibitionRepository.Add(exhibition);
     }
     
-    public async Task Update(Guid ehibitionId, string name, DateTime date)
+    public async Task Update(Guid exhibitionId, string name, DateTime date)
     {
-        await _exhibitionRepository.Update(ehibitionId, name, date);
+        await _exhibitionRepository.Update(exhibitionId, name, date);
     }
 
-    public async Task Delete(Guid ehibitionId)
+    public async Task Delete(Guid exhibitionId)
     {
-        await _exhibitionRepository.Delete(ehibitionId);
+        await _exhibitionRepository.Delete(exhibitionId);
     }
 }

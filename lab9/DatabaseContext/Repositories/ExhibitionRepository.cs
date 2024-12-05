@@ -16,6 +16,7 @@ public class ExhibitionRepository : IExhibitionRepository
     public async Task Add(Exhibition exhibition)
     {
         await _appDbContext.Exhibitions.AddAsync(exhibition);
+        Console.WriteLine($"Added exhibition {exhibition.Id}");
         await _appDbContext.SaveChangesAsync();
     }
 
@@ -34,5 +35,13 @@ public class ExhibitionRepository : IExhibitionRepository
         await _appDbContext.Exhibitions
             .Where(e => e.Id == exhibitionId)
             .ExecuteDeleteAsync();
+    }
+    
+    public async Task<List<Guid>> GetAll()
+    {
+        var list = await _appDbContext.Exhibitions
+            .Select(e => e.Id)
+            .ToListAsync();
+        return list;
     }
 }
