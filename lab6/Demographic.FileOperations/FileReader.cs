@@ -1,66 +1,82 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using CsvHelper;
+using System.IO;
+using System.Linq;
 
 namespace Demographic.FileOperations;
 
-public static class FileReader
+public static class FileOperations
 {
-    public static IEnumerable<Person> ReadInitialPopulation(string filePath)
+    /// <summary>
+    /// Загрузка данных о первоначальном возрастном составе населения из CSV файла.
+    /// </summary>
+    /// <param name="filePath">Путь к файлу.</param>
+    /// <returns>Словарь, где ключ — возраст, значение — количество людей (в тыс.).</returns>
+    public static Dictionary<int, double> LoadInitialPopulation(string filePath)
     {
-        var population = new List<Person>();
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException($"Initial population file not found: {filePath}");
 
-        using (var reader = new StreamReader(filePath))
+        var initialPopulation = new Dictionary<int, double>();
+
+        foreach (var line in File.ReadLines(filePath).Skip(1)) // Пропускаем заголовок
         {
-            string? line = reader.ReadLine(); // Считываем заголовок
-            if (line == null)
-                throw new InvalidOperationException("Файл пуст или отсутствует заголовок.");
+            var parts = line.Split(", ");
+            if (parts.Length < 2)
+                continue;
 
-            while ((line = reader.ReadLine()) != null)
-            {
-                var parts = line.Split(',');
+            int age = int.Parse(parts[0]);
+            var count = double.Parse(parts[1]);
 
-                if (parts.Length != 2)
-                    throw new FormatException($"Неверный формат строки: {line}");
-
-                var age = int.Parse(parts[0], CultureInfo.InvariantCulture);
-                var count = double.Parse(parts[1], CultureInfo.InvariantCulture);
-
-                // Добавляем `count` объектов Person с данным возрастом и рандомным полом
-                for (int i = 0; i < count; i++)
-                {
-                    bool isFemale = Random.Shared.NextDouble() < 0.5; // 50% вероятность женского пола
-                    population.Add(new Person(DateTime.Now.Year - age, isFemale));
-                }
-            }
+            initialPopulation[age] = count;
         }
 
-        return population;
+        return initialPopulation;
     }
 
-    public static MortalityTable ReadDeathRules(string filePath)
+    /// <summary>
+    /// Загрузка таблицы смертности из CSV файла.
+    /// </summary>
+    /// <param name="filePath">Путь к файлу.</param>
+    /// <returns>Список правил смертности, каждый элемент содержит возрастной интервал и вероятности смерти.</returns>
+    public static List<DeathRate> LoadDeathRates(string filePath)
     {
-        var rules = new List<MortalityRule>();
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException($"Death rates file not found: {filePath}");
 
-        using (var reader = new StreamReader(filePath))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        var deathRates = new List<DeathRate>();
+
+        foreach (var line in File.ReadLines(filePath).Skip(1)) // Пропускаем заголовок
         {
-            csv.Read();
-            csv.ReadHeader();
+            var parts = line.Split(',');
+            if (parts.Length < 4)
+                continue;
 
-            while (csv.Read())
-            {
-                var rule = new MortalityRule
-                {
-                    AgeStart = csv.GetField<int>("AgeStart"),
-                    AgeEnd = csv.GetField<int>("AgeEnd"),
-                    MaleMortality = csv.GetField<double>("MaleMortality"),
-                    FemaleMortality = csv.GetField<double>("FemaleMortality"),
-                };
-                rules.Add(rule);
-            }
+            int startAge = int.Parse(parts[0]);
+            int endAge = int.Parse(parts[1]);
+            double maleDeathRate = double.Parse(parts[2], CultureInfo.InvariantCulture);
+            double femaleDeathRate = double.Parse(parts[3], CultureInfo.InvariantCulture);
+
+            deathRates.Add(new DeathRate(startAge, endAge, maleDeathRate, femaleDeathRate));
         }
 
-        return new MortalityTable(rules);
+        return deathRates;
     }
 
+    /// <summary>
+    /// Сохранение результатов моделирования в файл CSV.
+    /// </summary>
+    /// <param name="results">Результаты моделирования.</param>
+    /// <param name="filePath">Путь к файлу.</param>
+    public static void SaveResults(IEnumerable<SimulationResult> results, string filePath)
+    {
+        using var writer = new StreamWriter(filePath);
+        writer.WriteLine("Year,TotalPopulation,MalePopulation,FemalePopulation");
+
+        foreach (var result in results)
+        {
+            writer.WriteLine($"{result.Year},{result.TotalPopulation},{result.MalePopulation},{result.FemalePopulation}");
+        }
+    }
 }
