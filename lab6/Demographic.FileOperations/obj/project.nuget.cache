@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "UElPSqoId3c=",
+  "success": true,
+  "projectFilePath": "/Users/nikitavolnuhin/Labs_cs/lab6/Demographic.FileOperations/Demographic.FileOperations.csproj",
+  "expectedPackageFiles": [
+    "/Users/nikitavolnuhin/.nuget/packages/csvhelper/33.0.1/csvhelper.33.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
