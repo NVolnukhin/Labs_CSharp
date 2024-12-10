@@ -19,10 +19,16 @@ class Program
             
             .AddScoped<ExhibitionFacade>()
             .AddScoped<VisitorFacade>()
+            .AddScoped<TicketFacade>()
             .BuildServiceProvider();
         
         var exhibitionFacade = serviceProvider.GetService<ExhibitionFacade>();
         var visitorFacade = serviceProvider.GetService<VisitorFacade>();
+        var ticketFacade = serviceProvider.GetService<TicketFacade>();
+        if (exhibitionFacade != null || visitorFacade != null || ticketFacade != null)
+        {
+            Console.WriteLine("Не найден один или несколько фасадов");
+        }
         
 
         while (true)
@@ -92,26 +98,26 @@ class Program
                     }
 
                     break;
-/*
+
                 case "3":
                     var ticketChoice = Choices.GetTicketChoice();
                     
                     switch (ticketChoice)
                     {
                         case "1":
-                            await facade.AddTicket();
+                            await ticketFacade.AddTicket();
                             break;
                         
                         case "2":
-                            await facade.UpdateTicket();
+                            await ticketFacade.UpdateTicket();
                             break;
 
                         case "3":
-                            await facade.DeleteTicket();
+                            await ticketFacade.DeleteTicket();
                             break;
                         
                         case "4":
-                            await facade.GetAllTickets();
+                            await ticketFacade.GetAllTickets();
                             break;
                         
                         case "0":
@@ -123,7 +129,7 @@ class Program
                     }
 
                     break;
- */               
+                
                 case "4":
                     Console.Write("Введите название выставки: ");
                     var exhibitionNameForTickets = Console.ReadLine()!;
