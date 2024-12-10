@@ -124,7 +124,7 @@ public class TicketFacade
             var exhibition = await _exhibitionRepository.GetById(ticket.ExhibitionId);
             var visitor = await _visitorRepository.GetById(ticket.VisitorId);
             Console.WriteLine(
-                $"ID билета: {ticket.Id} | Выставка: {exhibition.Name, -20} | Посетитель: {visitor.FullName, -20} | Цена: {ticket.Price:0.00}(по скидке - {ticket.Price * (100 - visitor.Discount) / 100:0.00})");
+                $"ID билета: {ticket.Id} | Выставка: {exhibition.Name,-20} | Посетитель: {visitor.FullName,-20} | Цена: {ticket.Price,-10:0.00}(Со скидкой {visitor.Discount}% - {ticket.Price * (100 - visitor.Discount) / 100:0.00})");
         }
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }

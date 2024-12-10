@@ -112,8 +112,11 @@ public class ExhibitionFacade
     }
     
     // Сколько билетов продано на выставку
-    public async Task<int> GetTicketsSoldByName(string exhibitionName)
+    public async Task GetTicketsSoldByName()
     {
+        Console.Write("Введите название выставки: ");
+        var exhibitionName = Console.ReadLine()!;
+        
         var ticketsQuery =
             from ticket in _context.Tickets
             join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
@@ -122,12 +125,15 @@ public class ExhibitionFacade
         
         var amount = await ticketsQuery.CountAsync();
 
-        return amount;
+        Console.WriteLine($"Продано билетов: {amount}");
     }
 
     // На сколько уникальных выставок сходил посетитель
-    public async Task<int> GetUniqueExhibitionsVisitedAsync(string visitorName)
+    public async Task GetUniqueExhibitionsVisited()
     {
+        Console.Write("Введите имя посетителя: ");
+        var visitorName = Console.ReadLine()!;
+        
         var exhibitionsQuery =
             from ticket in _context.Tickets
             join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
@@ -138,12 +144,15 @@ public class ExhibitionFacade
             .Distinct()
             .CountAsync();
         
-        return amount;
+        Console.WriteLine($"Посещено уникальных выставок: {amount}");
     }
 
     // Средний процент скидки на выставку
-    public async Task<double> GetAverageDiscountAsync(string exhibitionName)
+    public async Task GetAverageDiscount()
     {
+        Console.Write("Введите название выставки: ");
+        var exhibitionName = Console.ReadLine()!;
+        
         var discountsQuery =
             from ticket in _context.Tickets
             join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
@@ -155,6 +164,7 @@ public class ExhibitionFacade
             .Distinct().
             ToListAsync();
 
-        return discounts.Count != 0 ? discounts.Average() : 0.0;
+        var avgDiscount = discounts.Count != 0 ? discounts.Average() : 0.0;
+        Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%");
     }
 }

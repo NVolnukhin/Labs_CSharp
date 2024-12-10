@@ -131,24 +131,15 @@ class Program
                     break;
                 
                 case "4":
-                    Console.Write("Введите название выставки: ");
-                    var exhibitionNameForTickets = Console.ReadLine()!;
-                    var ticketsSold = await exhibitionFacade.GetTicketsSoldByName(exhibitionNameForTickets);
-                    Console.WriteLine($"Продано билетов: {ticketsSold}");
+                    await exhibitionFacade.GetTicketsSoldByName();
                     break;
 
                 case "5":
-                    Console.Write("Введите имя посетителя: ");
-                    var visitorFullnameForExhibitions = Console.ReadLine()!;
-                    var uniqueExhibitions = await exhibitionFacade.GetUniqueExhibitionsVisitedAsync(visitorFullnameForExhibitions);
-                    Console.WriteLine($"Посещено уникальных выставок: {uniqueExhibitions}");
+                    await exhibitionFacade.GetUniqueExhibitionsVisited();
                     break;
 
                 case "6":
-                    Console.Write("Введите название выставки: ");
-                    var exhibitionNameForDiscount = Console.ReadLine()!;
-                    var avgDiscount = await exhibitionFacade.GetAverageDiscountAsync(exhibitionNameForDiscount);
-                    Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%");
+                    await exhibitionFacade.GetAverageDiscount();
                     break;
 
                 case "0":
