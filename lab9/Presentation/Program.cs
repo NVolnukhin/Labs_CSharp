@@ -4,6 +4,7 @@ using DatabaseContext.Repositories;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Presentation;
 
 class Program
 {
@@ -22,18 +23,18 @@ class Program
         var facade = serviceProvider.GetService<ExhibitionFacade>();
         if (facade == null)
         {
-            Console.WriteLine("No exhibition facade found");
+            Console.WriteLine("Не найден Exhibition Facade");
             return;
         }
 
         while (true)
         {
-            var choice = GetChoice();
+            var choice = Choices.GetChoice();
 
             switch (choice)
             {
                 case "1":
-                    var exhibitionChoice = GetExhibitionChoice();
+                    var exhibitionChoice = Choices.GetExhibitionChoice();
                     
                     switch (exhibitionChoice)
                     {
@@ -64,7 +65,7 @@ class Program
                     break;
 
                 case "2":
-                    var visitorChoice = GetVisitorChoice();
+                    var visitorChoice = Choices.GetVisitorChoice();
                     
                     switch (visitorChoice)
                     {
@@ -95,7 +96,7 @@ class Program
                     break;
 
                 case "3":
-                    var ticketChoice = GetTicketChoice();
+                    var ticketChoice = Choices.GetTicketChoice();
                     
                     switch (ticketChoice)
                     {
@@ -154,55 +155,5 @@ class Program
                     break;
             }
         }
-    }
-
-    private static string GetChoice()
-    {
-        Console.WriteLine("1. Действия с выставками");
-        Console.WriteLine("2. Действия с посетителями");
-        Console.WriteLine("3. Действия с билетами");
-        Console.WriteLine("4. Количество билетов, проданных на выставку");
-        Console.WriteLine("5. Количество выставок, посещенных опредленным человеком");
-        Console.WriteLine("6. Средняя скидка на выставку");
-        
-        Console.WriteLine("0. Выход");
-        
-        return Console.ReadLine() ?? string.Empty;
-    }
-    
-    private static string GetExhibitionChoice()
-    {
-        Console.WriteLine("1. Добавить выставку");
-        Console.WriteLine("2. Изменить выставку");
-        Console.WriteLine("3. Удалить выставку");
-        Console.WriteLine("4. Вывести список всех выставок");
-        
-        Console.WriteLine("0. Назад");
-        
-        return Console.ReadLine() ?? string.Empty;
-    }
-    
-    private static string GetTicketChoice()
-    {
-        Console.WriteLine("1. Добавить билет");
-        Console.WriteLine("2. Изменить билет");
-        Console.WriteLine("3. Удалить билет");
-        Console.WriteLine("4. Вывести список всех билетов");
-        
-        Console.WriteLine("0. Назад");
-        
-        return Console.ReadLine() ?? string.Empty;
-    }
-    
-    private static string GetVisitorChoice()
-    {
-        Console.WriteLine("1. Добавить посетителя");
-        Console.WriteLine("2. Изменить посетителя");
-        Console.WriteLine("3. Удалить посетителя");
-        Console.WriteLine("4. Вывести список всех посетителей");
-        
-        Console.WriteLine("0. Назад");
-        
-        return Console.ReadLine() ?? string.Empty;
     }
 }
