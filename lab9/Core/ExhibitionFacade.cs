@@ -30,10 +30,10 @@ public class ExhibitionFacade
             Console.Write("Enter Start Date (yyyy-MM-dd): ");
             var date = DateTime.Parse(Console.ReadLine() ?? "01.01.2024 00:00:00").ToUniversalTime();
                         
-            var ex = Exhibition.Create(name, date);
-            Console.WriteLine($"Создана выставка {ex.Id}");
+            var exhibition = Exhibition.Create(name, date);
+            Console.WriteLine($"Создана выставка {exhibition.Id}");
             
-            await _exhibitionRepository.Add(ex);
+            await _exhibitionRepository.Add(exhibition);
         }
         catch (FormatException)
         {
@@ -53,7 +53,7 @@ public class ExhibitionFacade
             Console.Write("Введите ID выставки: ");
             var id = Guid.Parse(Console.ReadLine());
             await _exhibitionRepository.Delete(id);
-            Console.WriteLine("ex deleted");
+            Console.WriteLine("Выставка удалена");
         }
         catch (FormatException)
         {
@@ -77,7 +77,7 @@ public class ExhibitionFacade
             Console.Write("Enter Start Date (yyyy-MM-dd): ");
             var date = DateTime.Parse(Console.ReadLine() ?? "01.01.2024 00:00:00").ToUniversalTime();
             await _exhibitionRepository.Update(id, name, date);
-            Console.WriteLine("ex updated");
+            Console.WriteLine("Выставка обновлена");
         }
         catch (FormatException)
         {
@@ -92,6 +92,7 @@ public class ExhibitionFacade
     
     public async Task GetAllExhibitions()
     {
+        Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------------");
         var exhibitions =
             from exhibition in _context.Exhibitions
             select exhibition;
@@ -106,7 +107,8 @@ public class ExhibitionFacade
         var list = await exhibitions.ToListAsync();
 
         foreach (var exhibition in list)
-            Console.WriteLine($"exhibition id: {exhibition.Id} | name: {exhibition.Name}, date: {exhibition.Date}");
+            Console.WriteLine($"ID выставки: {exhibition.Id} | Название: {exhibition.Name, -20} | Дата: {exhibition.Date.ToLongDateString()}");
+        Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
     public async Task AddVisitor()
@@ -179,6 +181,7 @@ public class ExhibitionFacade
     
     public async Task GetAllVisitors()
     {
+        Console.WriteLine("-------------------------------------------------------------------------------------------------------");
         var visitors =
             from visitor in _context.Visitors
             select visitor;
@@ -192,7 +195,8 @@ public class ExhibitionFacade
         var list = await visitors.ToListAsync();
 
         foreach (var visitor in list)
-            Console.WriteLine($"ID посетителя: {visitor.Id} | полное имя: {visitor.FullName}, скидка: {visitor.Discount}");
+            Console.WriteLine($"ID посетителя: {visitor.Id} | Полное имя: {visitor.FullName, -20} | Скидка: {visitor.Discount}");
+        Console.WriteLine("-------------------------------------------------------------------------------------------------------\n");
     }
 
     
@@ -281,6 +285,7 @@ public class ExhibitionFacade
     
     public async Task GetAllTickets()
     {
+        Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         var tickets =
             from ticket in _context.Tickets
             select ticket;
@@ -299,8 +304,9 @@ public class ExhibitionFacade
             var exhibition = await _exhibitionRepository.GetById(ticket.ExhibitionId);
             var visitor = await _visitorRepository.GetById(ticket.VisitorId);
             Console.WriteLine(
-                $"ID билета: {ticket.Id} | Выставка: {exhibition.Name}, Посетитель: {visitor.FullName}, Цена: {ticket.Price:0.00}(по скидке - {ticket.Price * (100 - visitor.Discount) / 100:0.00})");
+                $"ID билета: {ticket.Id} | Выставка: {exhibition.Name, -20} | Посетитель: {visitor.FullName, -20} | Цена: {ticket.Price:0.00}(по скидке - {ticket.Price * (100 - visitor.Discount) / 100:0.00})");
         }
+        Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
     

@@ -1,10 +1,10 @@
 ﻿using Core;
 using DatabaseContext;
-using DatabaseContext.Repositories;
-using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Presentation;
+
+namespace Presentation;
+    
 
 class Program
 {
