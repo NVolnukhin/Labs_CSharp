@@ -1,5 +1,4 @@
-﻿using DatabaseContext.Configurations;
-using DatabaseModel;
+﻿using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -13,15 +12,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<Exhibition> Exhibitions { get; set; }
     public DbSet<Visitor> Visitors { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
+    public AppDbContext GetAppDbContext() => this;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        // Настройка связи Ticket -> Exhibition и Visitor
-        modelBuilder.ApplyConfiguration(new TicketConfiguration());
-        
-        base.OnModelCreating(modelBuilder);
-    }
     
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseNpgsql("Host=localhost;Port=5432;Database=lab9db;Username=postgres;Password=123");
 }

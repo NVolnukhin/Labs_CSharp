@@ -15,6 +15,16 @@ public class VisitorRepository
     public async Task Add(Visitor visitor)
     {
         await _appDbContext.Visitors.AddAsync(visitor);
+        Console.WriteLine($"Добавлен посетитель {visitor.Id}");
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            Console.WriteLine($"Сохранен посетитель {visitor.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Не удалось сохранить пользователя {visitor.Id}. \nПричина: {ex}");
+        }
         await _appDbContext.SaveChangesAsync();
     }
     
@@ -33,5 +43,17 @@ public class VisitorRepository
         await _appDbContext.Visitors
             .Where(v => v.Id == visitorId)
             .ExecuteDeleteAsync();
+    }
+
+    public async Task<Visitor?> GetByName(string name)
+    {
+        return await _appDbContext.Visitors
+            .FirstOrDefaultAsync(visitor => visitor.FullName == name);
+    }
+    
+    public async Task<Visitor?> GetById(Guid visitorId)
+    {
+        return await _appDbContext.Visitors
+            .FirstOrDefaultAsync(visitor => visitor.Id == visitorId);
     }
 }

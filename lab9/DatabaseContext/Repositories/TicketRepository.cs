@@ -15,10 +15,19 @@ public class TicketRepository
     public async Task Add(Ticket ticket)
     {
         await _appDbContext.Tickets.AddAsync(ticket);
-        await _appDbContext.SaveChangesAsync();
+        Console.WriteLine($"Добавлен билет {ticket.Id}");
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            Console.WriteLine($"Сохранен билет {ticket.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Не удалось сохранить билет {ticket.Id}. \nПричина: {ex}");
+        }
     }
     
-    public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price) //TODO
+    public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price)
     {
         var exhibition = await _appDbContext.Exhibitions
             .FirstOrDefaultAsync(exhibition => exhibition.Id == exhibitionId);
@@ -31,9 +40,7 @@ public class TicketRepository
             .Where(t => t.Id == ticketId)
             .ExecuteUpdateAsync(t => t
                 .SetProperty(p => p.ExhibitionId, exhibitionId)
-                .SetProperty(p => p.Exhibition, exhibition)
                 .SetProperty(p => p.VisitorId, visitorId)
-                .SetProperty(p => p.Visitor, visitor)
                 .SetProperty(p => p.Price, price)
             );
     }

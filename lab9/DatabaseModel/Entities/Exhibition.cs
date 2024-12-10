@@ -14,7 +14,7 @@ public class Exhibition
     public DateTime Date { get; set; }
     public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     
-    public static Exhibition Create(string name,DateTime date)
+    public static Exhibition Create(string name, DateTime date)
     {
         return new Exhibition(Guid.NewGuid(), name, date);
     }

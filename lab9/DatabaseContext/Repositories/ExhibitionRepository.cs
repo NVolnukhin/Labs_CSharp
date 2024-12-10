@@ -16,7 +16,16 @@ public class ExhibitionRepository : IExhibitionRepository
     public async Task Add(Exhibition exhibition)
     {
         await _appDbContext.Exhibitions.AddAsync(exhibition);
-        await _appDbContext.SaveChangesAsync();
+        Console.WriteLine($"Добавлена выставка {exhibition.Id}");
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            Console.WriteLine($"Сохранена выставка {exhibition.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Не удалось сохранить выставку {exhibition.Id}. \nПричина: {ex}");
+        }
     }
 
     public async Task Update(Guid exhibitionId, string name, DateTime date)
@@ -34,5 +43,19 @@ public class ExhibitionRepository : IExhibitionRepository
         await _appDbContext.Exhibitions
             .Where(e => e.Id == exhibitionId)
             .ExecuteDeleteAsync();
+    }
+    
+    public async Task<Exhibition?> GetByName(string name)
+    {
+        return await _appDbContext.Exhibitions
+            .FirstOrDefaultAsync(exhibition => exhibition.Name == name);
+    }
+    
+    public async Task<Exhibition?> GetById(Guid exhibitionId)
+    {
+        return await _appDbContext.Exhibitions
+            .Where(exhibition => exhibition.Id == exhibitionId)
+            .Select(exhibition => exhibition)
+            .FirstOrDefaultAsync();
     }
 }

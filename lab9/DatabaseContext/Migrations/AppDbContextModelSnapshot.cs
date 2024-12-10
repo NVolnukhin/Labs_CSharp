@@ -84,21 +84,17 @@ namespace DatabaseContext.Migrations
 
             modelBuilder.Entity("DatabaseModel.Ticket", b =>
                 {
-                    b.HasOne("DatabaseModel.Exhibition", "Exhibition")
+                    b.HasOne("DatabaseModel.Exhibition", null)
                         .WithMany("Tickets")
                         .HasForeignKey("ExhibitionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DatabaseModel.Visitor", "Visitor")
+                    b.HasOne("DatabaseModel.Visitor", null)
                         .WithMany("Tickets")
                         .HasForeignKey("VisitorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Exhibition");
-
-                    b.Navigation("Visitor");
                 });
 
             modelBuilder.Entity("DatabaseModel.Exhibition", b =>
