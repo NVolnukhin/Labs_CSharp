@@ -18,14 +18,12 @@ class Program
                 })
             
             .AddScoped<ExhibitionFacade>()
+            .AddScoped<VisitorFacade>()
             .BuildServiceProvider();
         
-        var facade = serviceProvider.GetService<ExhibitionFacade>();
-        if (facade == null)
-        {
-            Console.WriteLine("Не найден Exhibition Facade");
-            return;
-        }
+        var exhibitionFacade = serviceProvider.GetService<ExhibitionFacade>();
+        var visitorFacade = serviceProvider.GetService<VisitorFacade>();
+        
 
         while (true)
         {
@@ -39,19 +37,19 @@ class Program
                     switch (exhibitionChoice)
                     {
                         case "1":
-                            await facade.AddExhibition();
+                            await exhibitionFacade.AddExhibition();
                             break;
                         
                         case "2":
-                            await facade.UpdateExhibition();
+                            await exhibitionFacade.UpdateExhibition();
                             break;
 
                         case "3":
-                            await facade.DeleteExhibition();
+                            await exhibitionFacade.DeleteExhibition();
                             break;
                         
                         case "4":
-                            await facade.GetAllExhibitions();
+                            await exhibitionFacade.GetAllExhibitions();
                             break;
                         
                         case "0":
@@ -70,19 +68,19 @@ class Program
                     switch (visitorChoice)
                     {
                         case "1":
-                            await facade.AddVisitor();
+                            await visitorFacade.AddVisitor();
                             break;
                         
                         case "2":
-                            await facade.UpdateVisitor();
+                            await visitorFacade.UpdateVisitor();
                             break;
 
                         case "3":
-                            await facade.DeleteVisitor();
+                            await visitorFacade.DeleteVisitor();
                             break;
                         
                         case "4":
-                            await facade.GetAllVisitors();
+                            await visitorFacade.GetAllVisitors();
                             break;
                         
                         case "0":
@@ -94,7 +92,7 @@ class Program
                     }
 
                     break;
-
+/*
                 case "3":
                     var ticketChoice = Choices.GetTicketChoice();
                     
@@ -125,25 +123,25 @@ class Program
                     }
 
                     break;
-                
+ */               
                 case "4":
                     Console.Write("Введите название выставки: ");
                     var exhibitionNameForTickets = Console.ReadLine()!;
-                    var ticketsSold = await facade.GetTicketsSoldByName(exhibitionNameForTickets);
+                    var ticketsSold = await exhibitionFacade.GetTicketsSoldByName(exhibitionNameForTickets);
                     Console.WriteLine($"Продано билетов: {ticketsSold}");
                     break;
 
                 case "5":
                     Console.Write("Введите имя посетителя: ");
                     var visitorFullnameForExhibitions = Console.ReadLine()!;
-                    var uniqueExhibitions = await facade.GetUniqueExhibitionsVisitedAsync(visitorFullnameForExhibitions);
+                    var uniqueExhibitions = await exhibitionFacade.GetUniqueExhibitionsVisitedAsync(visitorFullnameForExhibitions);
                     Console.WriteLine($"Посещено уникальных выставок: {uniqueExhibitions}");
                     break;
 
                 case "6":
                     Console.Write("Введите название выставки: ");
                     var exhibitionNameForDiscount = Console.ReadLine()!;
-                    var avgDiscount = await facade.GetAverageDiscountAsync(exhibitionNameForDiscount);
+                    var avgDiscount = await exhibitionFacade.GetAverageDiscountAsync(exhibitionNameForDiscount);
                     Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%");
                     break;
 
