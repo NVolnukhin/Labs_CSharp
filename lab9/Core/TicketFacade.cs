@@ -11,6 +11,7 @@ public class TicketFacade
     private readonly ExhibitionRepository _exhibitionRepository;
     private readonly VisitorRepository _visitorRepository;
     private readonly TicketRepository _ticketRepository;
+    private readonly NamesGetter _namesGetter;
 
     public TicketFacade(AppDbContext context)
     {
@@ -18,14 +19,17 @@ public class TicketFacade
         _exhibitionRepository = new ExhibitionRepository(context);
         _visitorRepository = new VisitorRepository(context);
         _ticketRepository = new TicketRepository(context);
+        _namesGetter = new NamesGetter(context);
     }
     
      public async Task AddTicket() 
     {
         try
         {
+            await _namesGetter.GetAllVisitorsNames();
             Console.Write("Введите полное имя посетителя: ");
             var fullName = Console.ReadLine();
+            await _namesGetter.GetAllExhibitionNames();
             Console.Write("Введите название выставки: ");
             var exhibitionName = Console.ReadLine();
             Console.Write("Введите стоимость билета: ");
@@ -40,7 +44,6 @@ public class TicketFacade
             Console.WriteLine($"Создан билет {ticket.Id}");
             
             await _ticketRepository.Add(ticket);
-            Console.WriteLine("Билет добавлен");
         }
         catch (FormatException)
         {
@@ -79,8 +82,10 @@ public class TicketFacade
         {
             Console.Write("Введите ID билета: ");
             var id = Guid.Parse(Console.ReadLine());
+            await _namesGetter.GetAllVisitorsNames();
             Console.Write("Введите полное имя посетителя: ");
             var fullName = Console.ReadLine();
+            await _namesGetter.GetAllExhibitionNames();
             Console.Write("Введите название выставки: ");
             var exhibitionName = Console.ReadLine();
             Console.Write("Введите стоимость билета: ");

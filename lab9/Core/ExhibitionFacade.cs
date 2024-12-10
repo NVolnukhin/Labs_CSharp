@@ -9,15 +9,13 @@ public class ExhibitionFacade
 {
     private readonly AppDbContext _context;
     private readonly ExhibitionRepository _exhibitionRepository;
-    private readonly VisitorRepository _visitorRepository;
-    private readonly TicketRepository _ticketRepository;
+    private readonly NamesGetter _namesGetter;
 
     public ExhibitionFacade(AppDbContext context)
     {
         _context = context;
         _exhibitionRepository = new ExhibitionRepository(context);
-        _visitorRepository = new VisitorRepository(context);
-        _ticketRepository = new TicketRepository(context);
+        _namesGetter = new NamesGetter(context);
     }
     
     public async Task AddExhibition()
@@ -113,7 +111,7 @@ public class ExhibitionFacade
     // Сколько билетов продано на выставку
     public async Task GetTicketsSold()
     {
-        await GetAllExhibitionNames();
+        await _namesGetter.GetAllExhibitionNames();
      
         Console.Write("Введите название выставки: ");
         var exhibitionName = Console.ReadLine()!;
@@ -132,7 +130,7 @@ public class ExhibitionFacade
     // На сколько уникальных выставок сходил посетитель
     public async Task GetUniqueExhibitionsVisited()
     {
-        await GetAllVisitorsNames();
+        await _namesGetter.GetAllVisitorsNames();
         
         Console.Write("Введите имя посетителя: ");
         var visitorName = Console.ReadLine()!;
@@ -168,55 +166,23 @@ public class ExhibitionFacade
     // Средний процент скидки на выставку
     public async Task GetAverageDiscount()
     {
-        await GetAllExhibitionNames();
+        await _namesGetter.GetAllExhibitionNames();
         
         Console.Write("Введите название выставки: ");
         var exhibitionName = Console.ReadLine()!;
         
-        var discountsQuery =
+        var visitorsQuery =
             from ticket in _context.Tickets
             join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
             join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
             where exhibition.Name == exhibitionName
-            select visitor.Discount;
-        
-        var discounts = await discountsQuery
-            .Distinct().
-            ToListAsync();
+            select visitor;
 
-        var avgDiscount = discounts.Count != 0 ? discounts.Average() : 0.0;
+        var avgDiscount = await visitorsQuery
+            .Distinct()
+            .Select(v => v.Discount)
+            .AverageAsync();
+        
         Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%\n");
-    }
-
-    private async Task GetAllExhibitionNames()
-    {
-        Console.WriteLine("----------- Список всех выставок---------------");
-        
-        var exhibitionsQuery =
-            from exhibition in _context.Exhibitions
-            select exhibition.Name;
-        
-        var exhibitions = await exhibitionsQuery.Distinct().ToListAsync();
-        
-        foreach(var exhibition in exhibitions)
-            Console.WriteLine(exhibition);
-        
-        Console.WriteLine("-----------------------------------------------");
-    }
-    
-    private async Task GetAllVisitorsNames()
-    {
-        Console.WriteLine("----------- Список всех посетителей---------------");
-        
-        var visitorsQuery =
-            from visitor in _context.Visitors
-            select visitor.FullName;
-        
-        var visitors = await visitorsQuery.Distinct().ToListAsync();
-        
-        foreach(var visitor in visitors)
-            Console.WriteLine(visitor);
-        
-        Console.WriteLine("-------------------------------------------------");
     }
 }
