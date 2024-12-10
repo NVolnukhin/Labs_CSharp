@@ -29,13 +29,6 @@ public class TicketRepository
     
     public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price)
     {
-        var exhibition = await _appDbContext.Exhibitions
-            .FirstOrDefaultAsync(exhibition => exhibition.Id == exhibitionId);
-        
-        var visitor = await _appDbContext.Visitors
-            .FirstOrDefaultAsync(visitor => visitor.Id == visitorId);
-        
-        
         await _appDbContext.Tickets
             .Where(t => t.Id == ticketId)
             .ExecuteUpdateAsync(t => t
