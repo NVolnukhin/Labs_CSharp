@@ -104,7 +104,7 @@ class Program
                             break;
                         
                         case "2":
-                            //await facade.UpdateVisitor();
+                            await facade.UpdateTicket();
                             break;
 
                         case "3":
@@ -133,24 +133,24 @@ class Program
                     break;
 
                 case "5":
-                    Console.Write("Enter Visitor ID: ");
+                    Console.Write("Введите имя посетителя: ");
                     var visitorFullnameForExhibitions = Console.ReadLine()!;
                     var uniqueExhibitions = await facade.GetUniqueExhibitionsVisitedAsync(visitorFullnameForExhibitions);
-                    Console.WriteLine($"Unique Exhibitions: {uniqueExhibitions}");
+                    Console.WriteLine($"Посещено уникальных выставок: {uniqueExhibitions}");
                     break;
 
                 case "6":
-                    Console.Write("Enter Exhibition ID: ");
+                    Console.Write("Введите название выставки: ");
                     var exhibitionNameForDiscount = Console.ReadLine()!;
                     var avgDiscount = await facade.GetAverageDiscountAsync(exhibitionNameForDiscount);
-                    Console.WriteLine($"Average Discount: {avgDiscount:F2}%");
+                    Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%");
                     break;
 
                 case "0":
                     return;
 
                 default:
-                    Console.WriteLine("Invalid choice!");
+                    Console.WriteLine("Неверный ввод!");
                     break;
             }
         }
