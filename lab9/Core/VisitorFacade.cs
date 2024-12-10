@@ -104,6 +104,4 @@ public class VisitorFacade
             Console.WriteLine($"ID посетителя: {visitor.Id} | Полное имя: {visitor.FullName, -20} | Скидка: {visitor.Discount}");
         Console.WriteLine("-------------------------------------------------------------------------------------------------------\n");
     }
-
-    
 }

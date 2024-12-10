@@ -2,7 +2,6 @@
 using DatabaseContext.Repositories;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Core;
 
@@ -112,8 +111,10 @@ public class ExhibitionFacade
     }
     
     // Сколько билетов продано на выставку
-    public async Task GetTicketsSoldByName()
+    public async Task GetTicketsSold()
     {
+        await GetAllExhibitionNames();
+     
         Console.Write("Введите название выставки: ");
         var exhibitionName = Console.ReadLine()!;
         
@@ -125,12 +126,14 @@ public class ExhibitionFacade
         
         var amount = await ticketsQuery.CountAsync();
 
-        Console.WriteLine($"Продано билетов: {amount}");
+        Console.WriteLine($"Продано билетов: {amount}\n");
     }
 
     // На сколько уникальных выставок сходил посетитель
     public async Task GetUniqueExhibitionsVisited()
     {
+        await GetAllVisitorsNames();
+        
         Console.Write("Введите имя посетителя: ");
         var visitorName = Console.ReadLine()!;
         
@@ -140,16 +143,33 @@ public class ExhibitionFacade
             where visitor.FullName == visitorName
             select ticket.ExhibitionId;
         
-        var amount = await exhibitionsQuery
+        var totalSpendQuery =
+            from ticket in _context.Tickets
+            join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
+            where visitor.FullName == visitorName
+            select ticket.Price * (100 - visitor.Discount) / 100;
+        
+        var distinctAmount = await exhibitionsQuery
             .Distinct()
             .CountAsync();
         
-        Console.WriteLine($"Посещено уникальных выставок: {amount}");
+        var totalAmount = await exhibitionsQuery
+            .CountAsync();
+
+        var totalSpend = await totalSpendQuery
+            .SumAsync();
+        
+        Console.WriteLine($"Посещено уникальных выставок: {distinctAmount}");
+        Console.WriteLine($"Куплено всего билетов: {totalAmount}");
+        Console.WriteLine($"Всего потрачено денег на выставки: {totalSpend:0.00}\n");
+        
     }
 
     // Средний процент скидки на выставку
     public async Task GetAverageDiscount()
     {
+        await GetAllExhibitionNames();
+        
         Console.Write("Введите название выставки: ");
         var exhibitionName = Console.ReadLine()!;
         
@@ -165,6 +185,38 @@ public class ExhibitionFacade
             ToListAsync();
 
         var avgDiscount = discounts.Count != 0 ? discounts.Average() : 0.0;
-        Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%");
+        Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%\n");
+    }
+
+    private async Task GetAllExhibitionNames()
+    {
+        Console.WriteLine("----------- Список всех выставок---------------");
+        
+        var exhibitionsQuery =
+            from exhibition in _context.Exhibitions
+            select exhibition.Name;
+        
+        var exhibitions = await exhibitionsQuery.Distinct().ToListAsync();
+        
+        foreach(var exhibition in exhibitions)
+            Console.WriteLine(exhibition);
+        
+        Console.WriteLine("-----------------------------------------------");
+    }
+    
+    private async Task GetAllVisitorsNames()
+    {
+        Console.WriteLine("----------- Список всех посетителей---------------");
+        
+        var visitorsQuery =
+            from visitor in _context.Visitors
+            select visitor.FullName;
+        
+        var visitors = await visitorsQuery.Distinct().ToListAsync();
+        
+        foreach(var visitor in visitors)
+            Console.WriteLine(visitor);
+        
+        Console.WriteLine("-------------------------------------------------");
     }
 }

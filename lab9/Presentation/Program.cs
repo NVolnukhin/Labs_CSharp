@@ -131,7 +131,7 @@ class Program
                     break;
                 
                 case "4":
-                    await exhibitionFacade.GetTicketsSoldByName();
+                    await exhibitionFacade.GetTicketsSold();
                     break;
 
                 case "5":
