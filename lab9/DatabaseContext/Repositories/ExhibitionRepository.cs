@@ -16,15 +16,15 @@ public class ExhibitionRepository : IExhibitionRepository
     public async Task Add(Exhibition exhibition)
     {
         await _appDbContext.Exhibitions.AddAsync(exhibition);
-        Console.WriteLine($"Added exhibition {exhibition.Id}");
+        Console.WriteLine($"Добавлена выставка {exhibition.Id}");
         try
         {
             await _appDbContext.SaveChangesAsync();
-            Console.WriteLine($"Saved exhibition {exhibition.Id}");
+            Console.WriteLine($"Сохранена выставка {exhibition.Id}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to add exhibition {exhibition.Id}. \nReason: {ex}");
+            Console.WriteLine($"Не удалось сохранить выставку {exhibition.Id}. \nПричина: {ex}");
         }
     }
 
@@ -45,11 +45,17 @@ public class ExhibitionRepository : IExhibitionRepository
             .ExecuteDeleteAsync();
     }
     
-    public async Task<List<Guid>> GetAll()
+    public async Task<Exhibition?> GetByName(string name)
     {
-        var list = await _appDbContext.Exhibitions
-            .Select(e => e.Id)
-            .ToListAsync();
-        return list;
+        return await _appDbContext.Exhibitions
+            .FirstOrDefaultAsync(exhibition => exhibition.Name == name);
+    }
+    
+    public async Task<Exhibition?> GetById(Guid exhibitionId)
+    {
+        return await _appDbContext.Exhibitions
+            .Where(exhibition => exhibition.Id == exhibitionId)
+            .Select(exhibition => exhibition)
+            .FirstOrDefaultAsync();
     }
 }

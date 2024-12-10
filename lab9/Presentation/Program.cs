@@ -57,7 +57,7 @@ class Program
                             break;
                         
                         default:
-                            Console.WriteLine("Invalid choice!");
+                            Console.WriteLine("Неверный ввод!");
                             break;
                     }
 
@@ -88,21 +88,48 @@ class Program
                             break;
                         
                         default:
-                            Console.WriteLine("Invalid choice!");
+                            Console.WriteLine("Неверный ввод!");
                             break;
                     }
 
                     break;
 
                 case "3":
-                    Console.WriteLine("Ticket choice is not available!");
+                    var ticketChoice = GetTicketChoice();
+                    
+                    switch (ticketChoice)
+                    {
+                        case "1":
+                            await facade.AddTicket();
+                            break;
+                        
+                        case "2":
+                            //await facade.UpdateVisitor();
+                            break;
+
+                        case "3":
+                            await facade.DeleteTicket();
+                            break;
+                        
+                        case "4":
+                            await facade.GetAllTickets();
+                            break;
+                        
+                        case "0":
+                            break;
+                        
+                        default:
+                            Console.WriteLine("Неверный ввод!");
+                            break;
+                    }
+
                     break;
                 
                 case "4":
-                    Console.Write("Enter Exhibition ID: ");
+                    Console.Write("Введите название выставки: ");
                     var exhibitionNameForTickets = Console.ReadLine()!;
-                    var ticketsSold = await facade.GetTicketsSoldAsync(exhibitionNameForTickets);
-                    Console.WriteLine($"Tickets Sold: {ticketsSold}");
+                    var ticketsSold = await facade.GetTicketsSoldByName(exhibitionNameForTickets);
+                    Console.WriteLine($"Продано билетов: {ticketsSold}");
                     break;
 
                 case "5":

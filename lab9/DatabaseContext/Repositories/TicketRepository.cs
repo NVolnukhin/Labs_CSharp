@@ -15,15 +15,15 @@ public class TicketRepository
     public async Task Add(Ticket ticket)
     {
         await _appDbContext.Tickets.AddAsync(ticket);
-        Console.WriteLine($"Added ticket {ticket.Id}");
+        Console.WriteLine($"Добавлен билет {ticket.Id}");
         try
         {
             await _appDbContext.SaveChangesAsync();
-            Console.WriteLine($"Saved ticket {ticket.Id}");
+            Console.WriteLine($"Сохранен билет {ticket.Id}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to add exhibition {ticket.Id}. \nReason: {ex}");
+            Console.WriteLine($"Не удалось сохранить билет {ticket.Id}. \nПричина: {ex}");
         }
     }
     
@@ -40,9 +40,7 @@ public class TicketRepository
             .Where(t => t.Id == ticketId)
             .ExecuteUpdateAsync(t => t
                 .SetProperty(p => p.ExhibitionId, exhibitionId)
-                .SetProperty(p => p.Exhibition, exhibition)
                 .SetProperty(p => p.VisitorId, visitorId)
-                .SetProperty(p => p.Visitor, visitor)
                 .SetProperty(p => p.Price, price)
             );
     }
