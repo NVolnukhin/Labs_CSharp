@@ -2,7 +2,6 @@
 using DatabaseContext.Repositories;
 using DatabaseModel;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Core;
 
@@ -110,209 +109,15 @@ public class ExhibitionFacade
             Console.WriteLine($"ID выставки: {exhibition.Id} | Название: {exhibition.Name, -20} | Дата: {exhibition.Date.ToLongDateString()}");
         Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------------\n");
     }
-
-    public async Task AddVisitor()
-    {
-        try
-        {
-            Console.Write("Введите полное имя: ");
-            var name = Console.ReadLine() ?? "Иванов Иван Иваныч";
-            Console.Write("Введите скидку посетителя: ");
-            var discount = double.Parse(Console.ReadLine() ?? "0.0");
-            var visitor = Visitor.Create(name, discount);
-            Console.WriteLine($"Создан посетитель {visitor.Id}");
-            
-            await _visitorRepository.Add(visitor);
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
-
-    public async Task DeleteVisitor()
-    {
-        try
-        {
-            Console.Write("Введите ID посетителя: ");
-            var id = Guid.Parse(Console.ReadLine());
-            await _visitorRepository.Delete(id);
-            Console.WriteLine("Посетитель удален");
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
-    
-    public async Task UpdateVisitor()
-    {
-        try
-        {
-            Console.Write("Введите ID посетителя: ");
-            var id = Guid.Parse(Console.ReadLine());
-            Console.Write("Введите полное имя посетителя: ");
-            var name = Console.ReadLine() ?? "Иванов Иван Иваныч";
-            Console.Write("Введите скидку посетителя: ");
-            var discount = double.Parse(Console.ReadLine() ?? "0.0");
-            await _visitorRepository.Update(id, name, discount);
-            Console.WriteLine("Посетитель обновлен");
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
-    
-    public async Task GetAllVisitors()
-    {
-        Console.WriteLine("-------------------------------------------------------------------------------------------------------");
-        var visitors =
-            from visitor in _context.Visitors
-            select visitor;
-        
-        var count = await visitors.CountAsync();
-        if (count == 0)
-        {
-            Console.WriteLine($"Нет посетителей в базе данных");
-            return;
-        }
-        var list = await visitors.ToListAsync();
-
-        foreach (var visitor in list)
-            Console.WriteLine($"ID посетителя: {visitor.Id} | Полное имя: {visitor.FullName, -20} | Скидка: {visitor.Discount}");
-        Console.WriteLine("-------------------------------------------------------------------------------------------------------\n");
-    }
-
-    
-    public async Task AddTicket() 
-    {
-        try
-        {
-            Console.Write("Введите полное имя посетителя: ");
-            var fullName = Console.ReadLine();
-            Console.Write("Введите название выставки: ");
-            var exhibitionName = Console.ReadLine();
-            Console.Write("Введите стоимость билета: ");
-            var price = double.Parse(Console.ReadLine());
-            
-            var exhibition = await _exhibitionRepository.GetByName(exhibitionName);
-            var visitor = await _visitorRepository.GetByName(fullName);
-            
-            var ticket = Ticket.Create(exhibition.Id, visitor.Id, price);
-            
-            
-            Console.WriteLine($"Создан билет {ticket.Id}");
-            
-            await _ticketRepository.Add(ticket);
-            Console.WriteLine("Билет добавлен");
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
-
-    public async Task DeleteTicket()
-    {
-        try
-        {
-            Console.Write("Введите ID билета: ");
-            var id = Guid.Parse(Console.ReadLine());
-            await _ticketRepository.Delete(id);
-            Console.WriteLine("Билет удален");
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
-    
-    public async Task UpdateTicket()
-    {
-        try
-        {
-            Console.Write("Введите ID билета: ");
-            var id = Guid.Parse(Console.ReadLine());
-            Console.Write("Введите полное имя посетителя: ");
-            var fullName = Console.ReadLine();
-            Console.Write("Введите название выставки: ");
-            var exhibitionName = Console.ReadLine();
-            Console.Write("Введите стоимость билета: ");
-            var price = double.Parse(Console.ReadLine());
-            
-            var exhibition = await _exhibitionRepository.GetByName(exhibitionName);
-            var visitor = await _visitorRepository.GetByName(fullName);
-
-            await _ticketRepository.Update(id, exhibition.Id, visitor.Id, price);
-            Console.WriteLine("Билет обновлен");
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
-    
-    public async Task GetAllTickets()
-    {
-        Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        var tickets =
-            from ticket in _context.Tickets
-            select ticket;
-
-        var count = await tickets.CountAsync();
-        if (count == 0)
-        {
-            Console.WriteLine($"Нет билетов в базе данных");
-            return;
-        }
-        
-        var list = await tickets.ToListAsync();
-
-        foreach (var ticket in list)
-        {
-            var exhibition = await _exhibitionRepository.GetById(ticket.ExhibitionId);
-            var visitor = await _visitorRepository.GetById(ticket.VisitorId);
-            Console.WriteLine(
-                $"ID билета: {ticket.Id} | Выставка: {exhibition.Name, -20} | Посетитель: {visitor.FullName, -20} | Цена: {ticket.Price:0.00}(по скидке - {ticket.Price * (100 - visitor.Discount) / 100:0.00})");
-        }
-        Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    }
-
     
     // Сколько билетов продано на выставку
-    public async Task<int> GetTicketsSoldByName(string exhibitionName)
+    public async Task GetTicketsSold()
     {
+        await GetAllExhibitionNames();
+     
+        Console.Write("Введите название выставки: ");
+        var exhibitionName = Console.ReadLine()!;
+        
         var ticketsQuery =
             from ticket in _context.Tickets
             join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
@@ -321,28 +126,53 @@ public class ExhibitionFacade
         
         var amount = await ticketsQuery.CountAsync();
 
-        return amount;
+        Console.WriteLine($"Продано билетов: {amount}\n");
     }
 
     // На сколько уникальных выставок сходил посетитель
-    public async Task<int> GetUniqueExhibitionsVisitedAsync(string visitorName)
+    public async Task GetUniqueExhibitionsVisited()
     {
+        await GetAllVisitorsNames();
+        
+        Console.Write("Введите имя посетителя: ");
+        var visitorName = Console.ReadLine()!;
+        
         var exhibitionsQuery =
             from ticket in _context.Tickets
             join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
             where visitor.FullName == visitorName
             select ticket.ExhibitionId;
         
-        var amount = await exhibitionsQuery
+        var totalSpendQuery =
+            from ticket in _context.Tickets
+            join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
+            where visitor.FullName == visitorName
+            select ticket.Price * (100 - visitor.Discount) / 100;
+        
+        var distinctAmount = await exhibitionsQuery
             .Distinct()
             .CountAsync();
         
-        return amount;
+        var totalAmount = await exhibitionsQuery
+            .CountAsync();
+
+        var totalSpend = await totalSpendQuery
+            .SumAsync();
+        
+        Console.WriteLine($"Посещено уникальных выставок: {distinctAmount}");
+        Console.WriteLine($"Куплено всего билетов: {totalAmount}");
+        Console.WriteLine($"Всего потрачено денег на выставки: {totalSpend:0.00}\n");
+        
     }
 
     // Средний процент скидки на выставку
-    public async Task<double> GetAverageDiscountAsync(string exhibitionName)
+    public async Task GetAverageDiscount()
     {
+        await GetAllExhibitionNames();
+        
+        Console.Write("Введите название выставки: ");
+        var exhibitionName = Console.ReadLine()!;
+        
         var discountsQuery =
             from ticket in _context.Tickets
             join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
@@ -354,6 +184,39 @@ public class ExhibitionFacade
             .Distinct().
             ToListAsync();
 
-        return discounts.Count != 0 ? discounts.Average() : 0.0;
+        var avgDiscount = discounts.Count != 0 ? discounts.Average() : 0.0;
+        Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%\n");
+    }
+
+    private async Task GetAllExhibitionNames()
+    {
+        Console.WriteLine("----------- Список всех выставок---------------");
+        
+        var exhibitionsQuery =
+            from exhibition in _context.Exhibitions
+            select exhibition.Name;
+        
+        var exhibitions = await exhibitionsQuery.Distinct().ToListAsync();
+        
+        foreach(var exhibition in exhibitions)
+            Console.WriteLine(exhibition);
+        
+        Console.WriteLine("-----------------------------------------------");
+    }
+    
+    private async Task GetAllVisitorsNames()
+    {
+        Console.WriteLine("----------- Список всех посетителей---------------");
+        
+        var visitorsQuery =
+            from visitor in _context.Visitors
+            select visitor.FullName;
+        
+        var visitors = await visitorsQuery.Distinct().ToListAsync();
+        
+        foreach(var visitor in visitors)
+            Console.WriteLine(visitor);
+        
+        Console.WriteLine("-------------------------------------------------");
     }
 }
