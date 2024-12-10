@@ -17,7 +17,15 @@ public class ExhibitionRepository : IExhibitionRepository
     {
         await _appDbContext.Exhibitions.AddAsync(exhibition);
         Console.WriteLine($"Added exhibition {exhibition.Id}");
-        await _appDbContext.SaveChangesAsync();
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            Console.WriteLine($"Saved exhibition {exhibition.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to add exhibition {exhibition.Id}. \nReason: {ex}");
+        }
     }
 
     public async Task Update(Guid exhibitionId, string name, DateTime date)

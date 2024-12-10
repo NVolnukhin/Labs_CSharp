@@ -15,7 +15,16 @@ public class TicketRepository
     public async Task Add(Ticket ticket)
     {
         await _appDbContext.Tickets.AddAsync(ticket);
-        await _appDbContext.SaveChangesAsync();
+        Console.WriteLine($"Added ticket {ticket.Id}");
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            Console.WriteLine($"Saved ticket {ticket.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to add exhibition {ticket.Id}. \nReason: {ex}");
+        }
     }
     
     public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price)

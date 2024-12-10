@@ -15,6 +15,16 @@ public class VisitorRepository
     public async Task Add(Visitor visitor)
     {
         await _appDbContext.Visitors.AddAsync(visitor);
+        Console.WriteLine($"Added visitor {visitor.Id}");
+        try
+        {
+            await _appDbContext.SaveChangesAsync();
+            Console.WriteLine($"Saved visitor {visitor.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to save visitor {visitor.Id}. \nReason: {ex}");
+        }
         await _appDbContext.SaveChangesAsync();
     }
     
