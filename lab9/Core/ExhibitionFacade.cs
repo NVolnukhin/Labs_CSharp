@@ -10,11 +10,13 @@ public class ExhibitionFacade
     private readonly AppDbContext _context;
     private readonly ExhibitionRepository _exhibitionRepository;
     private readonly NamesGetter _namesGetter;
+    private readonly TicketRepository _ticketRepository;
 
     public ExhibitionFacade(AppDbContext context)
     {
         _context = context;
         _exhibitionRepository = new ExhibitionRepository(context);
+        _ticketRepository = new TicketRepository(context);
         _namesGetter = new NamesGetter(context);
     }
     

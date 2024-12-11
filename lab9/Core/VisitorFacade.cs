@@ -9,12 +9,14 @@ public class VisitorFacade
 {
     private readonly AppDbContext _context;
     private readonly VisitorRepository _visitorRepository;
+    private readonly TicketRepository _ticketRepository;
     private readonly NamesGetter _namesGetter;
 
     public VisitorFacade(AppDbContext context)
     {
         _context = context;
         _visitorRepository = new VisitorRepository(context);
+        _ticketRepository = new TicketRepository(context);
         _namesGetter = new NamesGetter(context);
     }
     
