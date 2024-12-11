@@ -61,6 +61,8 @@ public class ExhibitionFacade
             var guids = await _namesGetter.GetExhibitionGuidsList();
             if (guids.Any(g => g == id))
             {
+                await _ticketRepository.DeleteByExhibitionId(id);
+                Console.WriteLine("Билеты на выставку удалены");
                 await _exhibitionRepository.Delete(id);
                 Console.WriteLine("Выставка удалена");
             }

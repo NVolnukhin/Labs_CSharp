@@ -66,6 +66,8 @@ public class VisitorFacade
             var guids = await _namesGetter.GetVisitorGuidsList();
             if (guids.Any(g => g == id))
             {
+                await _ticketRepository.DeleteByVisitorId(id);
+                Console.WriteLine("Билеты посетителя удалены");
                 await _visitorRepository.Delete(id);
                 Console.WriteLine("Посетитель удален");
             }
