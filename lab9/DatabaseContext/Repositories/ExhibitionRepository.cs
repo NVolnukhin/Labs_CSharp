@@ -45,17 +45,19 @@ public class ExhibitionRepository : IExhibitionRepository
             .ExecuteDeleteAsync();
     }
     
-    public async Task<Exhibition?> GetByName(string name)
-    {
-        return await _appDbContext.Exhibitions
-            .FirstOrDefaultAsync(exhibition => exhibition.Name == name);
-    }
-    
     public async Task<Exhibition?> GetById(Guid exhibitionId)
     {
         return await _appDbContext.Exhibitions
             .Where(exhibition => exhibition.Id == exhibitionId)
             .Select(exhibition => exhibition)
             .FirstOrDefaultAsync();
+    }
+    
+    public async Task<Guid> GetIdByName(string name)
+    {
+        var exhibition = await _appDbContext.Exhibitions
+            .FirstOrDefaultAsync(exhibition => exhibition.Name == name);
+        
+        return exhibition!.Id;
     }
 }

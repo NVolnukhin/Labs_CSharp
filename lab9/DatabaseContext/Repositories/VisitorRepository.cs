@@ -56,4 +56,12 @@ public class VisitorRepository
         return await _appDbContext.Visitors
             .FirstOrDefaultAsync(visitor => visitor.Id == visitorId);
     }
+    
+    public async Task<Guid> GetIdByName(string name)
+    {
+        var visitor = await _appDbContext.Visitors
+            .FirstOrDefaultAsync(visitor => visitor.FullName == name);
+        
+        return visitor!.Id;
+    }
 }

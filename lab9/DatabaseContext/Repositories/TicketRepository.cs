@@ -44,4 +44,18 @@ public class TicketRepository
             .Where(t => t.Id == ticketId)
             .ExecuteDeleteAsync();
     }
+
+    public async Task DeleteByExhibitionId(Guid exhibitionId)
+    {
+        await _appDbContext.Tickets
+            .Where(t => t.ExhibitionId == exhibitionId)
+            .ExecuteDeleteAsync();
+    }
+
+    public async Task DeleteByVisitorId(Guid visitorId)
+    {
+        await _appDbContext.Tickets
+            .Where(t => t.VisitorId == visitorId)
+            .ExecuteDeleteAsync();
+    }
 }

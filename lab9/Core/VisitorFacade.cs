@@ -9,11 +9,15 @@ public class VisitorFacade
 {
     private readonly AppDbContext _context;
     private readonly VisitorRepository _visitorRepository;
+    private readonly TicketRepository _ticketRepository;
+    private readonly NamesGetter _namesGetter;
 
     public VisitorFacade(AppDbContext context)
     {
         _context = context;
         _visitorRepository = new VisitorRepository(context);
+        _ticketRepository = new TicketRepository(context);
+        _namesGetter = new NamesGetter(context);
     }
     
     
@@ -22,9 +26,19 @@ public class VisitorFacade
         try
         {
             Console.Write("Введите полное имя: ");
-            var name = Console.ReadLine() ?? "Иванов Иван Иваныч";
-            Console.Write("Введите скидку посетителя: ");
-            var discount = double.Parse(Console.ReadLine() ?? "0.0");
+            var name = Console.ReadLine()!;
+            if (name.Length < 3)
+            {
+                throw new Exception("Длина имени не может быть меньше 3 символов");
+            }
+            
+            Console.Write("Введите скидку посетителя в процентах: ");
+            var discount = double.Parse(Console.ReadLine()!);
+            if (discount is < 0 or > 100)
+            {
+                throw new Exception("Скидка может быть в диапазоне от 0 до 100%");
+            }
+            
             var visitor = Visitor.Create(name, discount);
             Console.WriteLine($"Создан посетитель {visitor.Id}");
             
@@ -33,11 +47,10 @@ public class VisitorFacade
         catch (FormatException)
         {
             Console.WriteLine("Неверный формат вводимых данных");
-            throw;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -45,19 +58,31 @@ public class VisitorFacade
     {
         try
         {
+            await GetAllVisitors();
+            
             Console.Write("Введите ID посетителя: ");
-            var id = Guid.Parse(Console.ReadLine());
-            await _visitorRepository.Delete(id);
-            Console.WriteLine("Посетитель удален");
+            var id = Guid.Parse(Console.ReadLine()!);
+            
+            var guids = await _namesGetter.GetVisitorGuidsList();
+            if (guids.Any(g => g == id))
+            {
+                await _ticketRepository.DeleteByVisitorId(id);
+                Console.WriteLine("Билеты посетителя удалены");
+                await _visitorRepository.Delete(id);
+                Console.WriteLine("Посетитель удален");
+            }
+            else
+            {
+                Console.WriteLine("Пользователь не найден");
+            }
         }
         catch (FormatException)
         {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
+            Console.WriteLine("Неверный формат ID");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
     
@@ -65,23 +90,32 @@ public class VisitorFacade
     {
         try
         {
+            await GetAllVisitors();
+            
             Console.Write("Введите ID посетителя: ");
-            var id = Guid.Parse(Console.ReadLine());
+            var id = Guid.Parse(Console.ReadLine()!);
             Console.Write("Введите полное имя посетителя: ");
-            var name = Console.ReadLine() ?? "Иванов Иван Иваныч";
-            Console.Write("Введите скидку посетителя: ");
-            var discount = double.Parse(Console.ReadLine() ?? "0.0");
+            var name = Console.ReadLine()!;
+            if (name.Length < 3)
+            {
+                throw new Exception("Длина имени не может быть меньше 3 символов");
+            }
+            Console.Write("Введите скидку посетителя в процентах: ");
+            var discount = double.Parse(Console.ReadLine()!);
+            if (discount is < 0 or > 100)
+            {
+                throw new Exception("Скидка может быть в диапазоне от 0 до 100%");
+            }
             await _visitorRepository.Update(id, name, discount);
             Console.WriteLine("Посетитель обновлен");
         }
         catch (FormatException)
         {
             Console.WriteLine("Неверный формат вводимых данных");
-            throw;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
     
