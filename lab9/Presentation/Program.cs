@@ -25,7 +25,7 @@ class Program
         var exhibitionFacade = serviceProvider.GetService<ExhibitionFacade>();
         var visitorFacade = serviceProvider.GetService<VisitorFacade>();
         var ticketFacade = serviceProvider.GetService<TicketFacade>();
-        if (exhibitionFacade != null || visitorFacade != null || ticketFacade != null)
+        if (exhibitionFacade == null || visitorFacade == null || ticketFacade == null)
         {
             Console.WriteLine("Не найден один или несколько фасадов");
         }

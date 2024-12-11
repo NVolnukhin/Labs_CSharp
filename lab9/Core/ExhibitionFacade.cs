@@ -23,23 +23,27 @@ public class ExhibitionFacade
         try
         {
             Console.Write("Введите название выставки: ");
-            var name = Console.ReadLine() ?? "Concert";
-            Console.Write("Enter Start Date (yyyy-MM-dd): ");
-            var date = DateTime.Parse(Console.ReadLine() ?? "01.01.2024 00:00:00").ToUniversalTime();
-                        
-            var exhibition = Exhibition.Create(name, date);
-            Console.WriteLine($"Создана выставка {exhibition.Id}");
+            var name = Console.ReadLine()!;
+            if (name.Length < 2)
+            {
+                throw new Exception("Название не может быть короче 3 символов");
+            }
             
+            Console.Write("Введите дату проведения выставки (дд-мм-гггг): ");
+            var date = DateTime.Parse(Console.ReadLine()!).ToUniversalTime() ;
+            
+            var exhibition = Exhibition.Create(name, date);
+            
+            Console.WriteLine($"Создана выставка {exhibition.Id}");
             await _exhibitionRepository.Add(exhibition);
         }
         catch (FormatException)
         {
             Console.WriteLine("Неверный формат вводимых данных");
-            throw;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -48,18 +52,17 @@ public class ExhibitionFacade
         try
         {
             Console.Write("Введите ID выставки: ");
-            var id = Guid.Parse(Console.ReadLine());
+            var id = Guid.Parse(Console.ReadLine()!);
             await _exhibitionRepository.Delete(id);
             Console.WriteLine("Выставка удалена");
         }
         catch (FormatException)
         {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
+            Console.WriteLine("Неверный формат ID");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
     
@@ -67,23 +70,31 @@ public class ExhibitionFacade
     {
         try
         {
+            await GetAllExhibitions();
+            
             Console.Write("Введите ID выставки: ");
-            var id = Guid.Parse(Console.ReadLine());
+            var id = Guid.Parse(Console.ReadLine()!);
+            
             Console.Write("Введите название выставки: ");
-            var name = Console.ReadLine() ?? "Concert";
+            var name = Console.ReadLine()!;
+            if (name.Length < 2)
+            {
+                throw new Exception("Название не может быть короче 3 символов");
+            }
+            
             Console.Write("Enter Start Date (yyyy-MM-dd): ");
-            var date = DateTime.Parse(Console.ReadLine() ?? "01.01.2024 00:00:00").ToUniversalTime();
+            var date = DateTime.Parse(Console.ReadLine()!).ToUniversalTime();
+            
             await _exhibitionRepository.Update(id, name, date);
             Console.WriteLine("Выставка обновлена");
         }
         catch (FormatException)
         {
             Console.WriteLine("Неверный формат вводимых данных");
-            throw;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
     
@@ -112,19 +123,32 @@ public class ExhibitionFacade
     public async Task GetTicketsSold()
     {
         await _namesGetter.GetAllExhibitionNames();
-     
+
         Console.Write("Введите название выставки: ");
         var exhibitionName = Console.ReadLine()!;
         
-        var ticketsQuery =
-            from ticket in _context.Tickets
-            join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
-            where exhibition.Name == exhibitionName
-            select ticket;
-        
-        var amount = await ticketsQuery.CountAsync();
+        var allExhibitionNames = await _namesGetter.GetExhibitionNamesList();
 
-        Console.WriteLine($"Продано билетов: {amount}\n");
+        if (allExhibitionNames.Any(name => name == exhibitionName))
+        {
+            var ticketsQuery =
+                from ticket in _context.Tickets
+                join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
+                where exhibition.Name == exhibitionName
+                select ticket;
+
+            var amount = await ticketsQuery.CountAsync();
+
+            Console.WriteLine(
+                amount == 0
+                    ? $"На данную выставку билеты еще не были проданы\n"
+                    : $"Продано билетов: {amount}\n"
+            );
+        }
+        else
+        {
+            Console.WriteLine($"Выставки {exhibitionName} не существует");
+        }
     }
 
     // На сколько уникальных выставок сходил посетитель
@@ -134,33 +158,43 @@ public class ExhibitionFacade
         
         Console.Write("Введите имя посетителя: ");
         var visitorName = Console.ReadLine()!;
-        
-        var exhibitionsQuery =
-            from ticket in _context.Tickets
-            join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
-            where visitor.FullName == visitorName
-            select ticket.ExhibitionId;
-        
-        var totalSpendQuery =
-            from ticket in _context.Tickets
-            join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
-            where visitor.FullName == visitorName
-            select ticket.Price * (100 - visitor.Discount) / 100;
-        
-        var distinctAmount = await exhibitionsQuery
-            .Distinct()
-            .CountAsync();
-        
-        var totalAmount = await exhibitionsQuery
-            .CountAsync();
 
-        var totalSpend = await totalSpendQuery
-            .SumAsync();
         
-        Console.WriteLine($"Посещено уникальных выставок: {distinctAmount}");
-        Console.WriteLine($"Куплено всего билетов: {totalAmount}");
-        Console.WriteLine($"Всего потрачено денег на выставки: {totalSpend:0.00}\n");
+        var allVisitorsNames = await _namesGetter.GetVisitorsNamesList();
         
+        if (allVisitorsNames.Any(name => name == visitorName))
+        {
+            var exhibitionsQuery =
+                from ticket in _context.Tickets
+                join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
+                where visitor.FullName == visitorName
+                select ticket.ExhibitionId;
+        
+            var totalSpendQuery =
+                from ticket in _context.Tickets
+                join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
+                where visitor.FullName == visitorName
+                select ticket.Price * (100 - visitor.Discount) / 100;
+        
+            var distinctAmount = await exhibitionsQuery
+                .Distinct()
+                .CountAsync();
+        
+            var totalAmount = await exhibitionsQuery
+                .CountAsync();
+
+            var totalSpend = await totalSpendQuery
+                .SumAsync();
+        
+            Console.WriteLine($"Посещено уникальных выставок: {distinctAmount}");
+            Console.WriteLine($"Куплено всего билетов: {totalAmount}");
+            Console.WriteLine($"Всего потрачено денег на выставки: {totalSpend:0.00}\n");
+        }
+        else
+        {
+            Console.WriteLine($"Посетитель {visitorName} не найден");
+        }
+       
     }
 
     // Средний процент скидки на выставку
@@ -171,18 +205,36 @@ public class ExhibitionFacade
         Console.Write("Введите название выставки: ");
         var exhibitionName = Console.ReadLine()!;
         
-        var visitorsQuery =
-            from ticket in _context.Tickets
-            join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
-            join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
-            where exhibition.Name == exhibitionName
-            select visitor;
+        var allExhibitionNames = await _namesGetter.GetExhibitionNamesList();
 
-        var avgDiscount = await visitorsQuery
-            .Distinct()
-            .Select(v => v.Discount)
-            .AverageAsync();
+        if (allExhibitionNames.Any(name => name == exhibitionName))
+        {
+            var visitorsQuery =
+                from ticket in _context.Tickets
+                join visitor in _context.Visitors on ticket.VisitorId equals visitor.Id
+                join exhibition in _context.Exhibitions on ticket.ExhibitionId equals exhibition.Id
+                where exhibition.Name == exhibitionName
+                select visitor;
         
-        Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%\n");
+            var count = await visitorsQuery.CountAsync();
+
+            if (count == 0)
+            {
+                Console.WriteLine($"Посетителей выставки {exhibitionName} не найдено\n");
+            }
+            else
+            {
+                var avgDiscount = await visitorsQuery
+                    .Distinct()
+                    .Select(v => v.Discount)
+                    .AverageAsync();
+
+                Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%\n");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Выставки {exhibitionName} не существует");
+        }
     }
 }

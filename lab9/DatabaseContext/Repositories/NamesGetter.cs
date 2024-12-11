@@ -44,4 +44,26 @@ public class NamesGetter
         
         Console.WriteLine("-------------------------------------------------");
     }
+
+    public async Task<List<string>> GetExhibitionNamesList()
+    {
+        var exhibitionNameQuery =
+            from exhibition in _context.Exhibitions
+            select exhibition.Name;
+        
+        var exhibitionNames = await exhibitionNameQuery.ToListAsync();
+        
+        return exhibitionNames;
+    }
+    
+    public async Task<List<string>> GetVisitorsNamesList()
+    {
+        var visitorsNameQuery =
+            from visitor in _context.Visitors
+            select visitor.FullName;
+        
+        var visitorsNames = await visitorsNameQuery.ToListAsync();
+        
+        return visitorsNames;
+    }
 }
