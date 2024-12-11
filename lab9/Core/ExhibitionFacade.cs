@@ -24,7 +24,7 @@ public class ExhibitionFacade
         {
             Console.Write("Введите название выставки: ");
             var name = Console.ReadLine()!;
-            if (name.Length < 2)
+            if (name.Length < 3)
             {
                 throw new Exception("Название не может быть короче 3 символов");
             }
@@ -33,8 +33,8 @@ public class ExhibitionFacade
             var date = DateTime.Parse(Console.ReadLine()!).ToUniversalTime() ;
             
             var exhibition = Exhibition.Create(name, date);
-            
             Console.WriteLine($"Создана выставка {exhibition.Id}");
+            
             await _exhibitionRepository.Add(exhibition);
         }
         catch (FormatException)
@@ -51,10 +51,21 @@ public class ExhibitionFacade
     {
         try
         {
+            await GetAllExhibitions();
+            
             Console.Write("Введите ID выставки: ");
             var id = Guid.Parse(Console.ReadLine()!);
-            await _exhibitionRepository.Delete(id);
-            Console.WriteLine("Выставка удалена");
+            
+            var guids = await _namesGetter.GetExhibitionGuidsList();
+            if (guids.Any(g => g == id))
+            {
+                await _exhibitionRepository.Delete(id);
+                Console.WriteLine("Выставка удалена");
+            }
+            else
+            {
+                Console.WriteLine("Выставка не найдена");
+            }
         }
         catch (FormatException)
         {
