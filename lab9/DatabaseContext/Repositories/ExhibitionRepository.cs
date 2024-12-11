@@ -58,4 +58,12 @@ public class ExhibitionRepository : IExhibitionRepository
             .Select(exhibition => exhibition)
             .FirstOrDefaultAsync();
     }
+    
+    public async Task<Guid> GetIdByName(string name)
+    {
+        var exhibition = await _appDbContext.Exhibitions
+            .FirstOrDefaultAsync(exhibition => exhibition.Name == name);
+        
+        return exhibition!.Id;
+    }
 }

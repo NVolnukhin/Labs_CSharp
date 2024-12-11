@@ -29,18 +29,34 @@ public class TicketFacade
             await _namesGetter.GetAllVisitorsNames();
             Console.Write("Введите полное имя посетителя: ");
             var fullName = Console.ReadLine();
+            
+            var allVisitorNames = await _namesGetter.GetVisitorsNamesList();
+            if (allVisitorNames.All(name => name != fullName))
+            {
+                throw new Exception($"Пользователя {fullName} не существует");
+            }
+            
             await _namesGetter.GetAllExhibitionNames();
             Console.Write("Введите название выставки: ");
             var exhibitionName = Console.ReadLine();
+            
+            var allExhibitionNames = await _namesGetter.GetExhibitionNamesList();
+            if (allExhibitionNames.All(name => name != exhibitionName))
+            {
+                throw new Exception($"Выставки {exhibitionName} не существует");
+            }
+            
             Console.Write("Введите стоимость билета: ");
-            var price = double.Parse(Console.ReadLine());
+            var price = double.Parse(Console.ReadLine()!);
+            if (price < 0)
+            {
+                throw new Exception("Стоимость билета не может быть меньше 0");
+            }
             
-            var exhibition = await _exhibitionRepository.GetByName(exhibitionName);
-            var visitor = await _visitorRepository.GetByName(fullName);
+            var exhibitionId = await _exhibitionRepository.GetIdByName(exhibitionName!);
+            var visitorId = await _visitorRepository.GetIdByName(fullName!);
             
-            var ticket = Ticket.Create(exhibition.Id, visitor.Id, price);
-            
-            
+            var ticket = Ticket.Create(exhibitionId, visitorId, price);
             Console.WriteLine($"Создан билет {ticket.Id}");
             
             await _ticketRepository.Add(ticket);
@@ -48,11 +64,10 @@ public class TicketFacade
         catch (FormatException)
         {
             Console.WriteLine("Неверный формат вводимых данных");
-            throw;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -60,19 +75,28 @@ public class TicketFacade
     {
         try
         {
+            await GetAllTickets();
             Console.Write("Введите ID билета: ");
-            var id = Guid.Parse(Console.ReadLine());
-            await _ticketRepository.Delete(id);
-            Console.WriteLine("Билет удален");
+            var id = Guid.Parse(Console.ReadLine()!);
+            
+            var guids = await _namesGetter.GetTicketsGuidsList();
+            if (guids.Any(g => g == id))
+            {
+                await _ticketRepository.Delete(id);
+                Console.WriteLine("Билет удален");
+            }
+            else
+            {
+                Console.WriteLine("Билет не найден");
+            }
         }
         catch (FormatException)
         {
-            Console.WriteLine("Неверный формат вводимых данных");
-            throw;
+            Console.WriteLine("Неверный формат ID");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
     
@@ -80,31 +104,57 @@ public class TicketFacade
     {
         try
         {
+            await GetAllTickets();
+            
             Console.Write("Введите ID билета: ");
-            var id = Guid.Parse(Console.ReadLine());
+            var id = Guid.Parse(Console.ReadLine()!);
+            
+            var allTicketGuids = await _namesGetter.GetTicketsGuidsList();
+            if (allTicketGuids.All(g => g != id))
+            {
+                throw new Exception($"Такого билета не существует");
+            }
+            
             await _namesGetter.GetAllVisitorsNames();
             Console.Write("Введите полное имя посетителя: ");
             var fullName = Console.ReadLine();
+            
+            var allVisitorNames = await _namesGetter.GetVisitorsNamesList();
+            if (allVisitorNames.All(name => name != fullName))
+            {
+                throw new Exception($"Пользователя {fullName} не существует");
+            }
+            
             await _namesGetter.GetAllExhibitionNames();
             Console.Write("Введите название выставки: ");
             var exhibitionName = Console.ReadLine();
-            Console.Write("Введите стоимость билета: ");
-            var price = double.Parse(Console.ReadLine());
             
-            var exhibition = await _exhibitionRepository.GetByName(exhibitionName);
-            var visitor = await _visitorRepository.GetByName(fullName);
+            var allExhibitionNames = await _namesGetter.GetExhibitionNamesList();
+            if (allExhibitionNames.All(name => name != exhibitionName))
+            {
+                throw new Exception($"Выставки {exhibitionName} не существует");
+            }
+            
+            Console.Write("Введите стоимость билета: ");
+            var price = double.Parse(Console.ReadLine()!);
+            if (price < 0)
+            {
+                throw new Exception("Стоимость билета не может быть меньше 0");
+            }
+            
+            var exhibitionId = await _exhibitionRepository.GetIdByName(exhibitionName!);
+            var visitorId = await _visitorRepository.GetIdByName(fullName!);
 
-            await _ticketRepository.Update(id, exhibition.Id, visitor.Id, price);
+            await _ticketRepository.Update(id, exhibitionId, visitorId, price);
             Console.WriteLine("Билет обновлен");
         }
         catch (FormatException)
         {
             Console.WriteLine("Неверный формат вводимых данных");
-            throw;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
         }
     }
     

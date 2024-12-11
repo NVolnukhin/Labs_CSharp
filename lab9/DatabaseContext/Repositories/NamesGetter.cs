@@ -81,7 +81,7 @@ public class NamesGetter
     public async Task<List<Guid>> GetTicketsGuidsList()
     {
         var ticketsGuidQuery =
-            from ticket in _context.Visitors
+            from ticket in _context.Tickets
             select ticket.Id;
         
         var ticketGuids = await ticketsGuidQuery.ToListAsync();
