@@ -11,8 +11,8 @@ public class Ticket
     }
     
     public Guid Id { get; init; } // Primary Key
-    public Guid ExhibitionId { get; init; } // FK на выставку
-    public Guid VisitorId { get; init; } // FK на посетителя
+    public Guid ExhibitionId { get; set; } // FK на выставку
+    public Guid VisitorId { get; set; } // FK на посетителя
     public double Price { get; set; }
     
     public static Ticket Create(Guid exhibitionId, Guid visitorId, double price)

@@ -30,12 +30,13 @@ public class VisitorRepository
     
     public async Task Update(Guid visitorId, string fullName, double discount)
     {
-        await _appDbContext.Visitors
-            .Where(v => v.Id == visitorId)
-            .ExecuteUpdateAsync(v => v
-                .SetProperty(p => p.FullName, fullName)
-                .SetProperty(p => p.Discount, discount)
-            );
+        var visitor = await _appDbContext.Visitors
+            .FirstAsync(v => v.Id == visitorId);
+        
+        visitor.FullName = fullName;
+        visitor.Discount = discount;
+        
+        await _appDbContext.SaveChangesAsync();
     }
 
     public async Task Delete(Guid visitorId)
@@ -56,12 +57,37 @@ public class VisitorRepository
         return await _appDbContext.Visitors
             .FirstOrDefaultAsync(visitor => visitor.Id == visitorId);
     }
-    
+
     public async Task<Guid> GetIdByName(string name)
     {
         var visitor = await _appDbContext.Visitors
             .FirstOrDefaultAsync(visitor => visitor.FullName == name);
-        
+
         return visitor!.Id;
+    }
+    
+    public IQueryable<Visitor> GetVisitorQuery()
+    {
+        return 
+            from visitor in _appDbContext.Visitors
+            select visitor;
+    }
+    
+    
+    
+    public async Task GetAllVisitorsNames()
+    {
+        Console.WriteLine("----------- Список всех посетителей---------------");
+        
+        var visitorsQuery =
+            from visitor in _appDbContext.Visitors
+            select visitor.FullName;
+        
+        var visitors = await visitorsQuery.Distinct().ToListAsync();
+        
+        foreach(var visitor in visitors)
+            Console.WriteLine(visitor);
+        
+        Console.WriteLine("-------------------------------------------------");
     }
 }

@@ -30,12 +30,13 @@ public class ExhibitionRepository : IExhibitionRepository
 
     public async Task Update(Guid exhibitionId, string name, DateTime date)
     {
-        await _appDbContext.Exhibitions
-            .Where(e => e.Id == exhibitionId)
-            .ExecuteUpdateAsync(e => e
-                    .SetProperty(p => p.Name, name)
-                    .SetProperty(p => p.Date, date)
-            );
+        var exhibition = await _appDbContext.Exhibitions
+            .FirstAsync(e => e.Id == exhibitionId);
+        
+        exhibition.Name = name;
+        exhibition.Date = date;
+        
+        await _appDbContext.SaveChangesAsync();
     }
 
     public async Task Delete(Guid exhibitionId)
@@ -53,11 +54,50 @@ public class ExhibitionRepository : IExhibitionRepository
             .FirstOrDefaultAsync();
     }
     
+    public async Task<Exhibition?> GetByName(string name)
+    {
+        return await _appDbContext.Exhibitions
+            .FirstOrDefaultAsync(exhibition => exhibition.Name == name);
+    }
+    
     public async Task<Guid> GetIdByName(string name)
     {
         var exhibition = await _appDbContext.Exhibitions
             .FirstOrDefaultAsync(exhibition => exhibition.Name == name);
         
         return exhibition!.Id;
+    }
+    
+    public async Task GetAllExhibitionNames()
+    {
+        Console.WriteLine("------------ Список всех выставок----------------");
+        
+        var exhibitionsQuery =
+            from exhibition in _appDbContext.Exhibitions
+            select exhibition.Name;
+        
+        var exhibitions = await exhibitionsQuery.Distinct().ToListAsync();
+        
+        foreach(var exhibition in exhibitions)
+            Console.WriteLine(exhibition);
+        
+        Console.WriteLine("-------------------------------------------------");
+    }
+    
+    public IQueryable<Exhibition> GetExhibitionQuery()
+    {
+        return 
+            from exhibition in _appDbContext.Exhibitions
+            select exhibition;
+    }
+
+    public IQueryable<Visitor> GetExhibitionVisitorsQuery(string exhibitionName)
+    {
+        return
+            from ticket in _appDbContext.Tickets
+            join visitor in _appDbContext.Visitors on ticket.VisitorId equals visitor.Id
+            join exhibition in _appDbContext.Exhibitions on ticket.ExhibitionId equals exhibition.Id
+            where exhibition.Name == exhibitionName
+            select visitor;
     }
 }

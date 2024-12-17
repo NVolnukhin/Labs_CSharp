@@ -7,41 +7,35 @@ namespace Core;
 
 public class TicketFacade
 {
-    private readonly AppDbContext _context;
     private readonly ExhibitionRepository _exhibitionRepository;
     private readonly VisitorRepository _visitorRepository;
     private readonly TicketRepository _ticketRepository;
-    private readonly NamesGetter _namesGetter;
 
     public TicketFacade(AppDbContext context)
     {
-        _context = context;
         _exhibitionRepository = new ExhibitionRepository(context);
         _visitorRepository = new VisitorRepository(context);
         _ticketRepository = new TicketRepository(context);
-        _namesGetter = new NamesGetter(context);
     }
     
      public async Task AddTicket() 
     {
         try
         {
-            await _namesGetter.GetAllVisitorsNames();
+            await _visitorRepository.GetAllVisitorsNames();
             Console.Write("Введите полное имя посетителя: ");
             var fullName = Console.ReadLine();
             
-            var allVisitorNames = await _namesGetter.GetVisitorsNamesList();
-            if (allVisitorNames.All(name => name != fullName))
+            if (await _visitorRepository.GetByName(fullName!) == null)
             {
                 throw new Exception($"Пользователя {fullName} не существует");
             }
             
-            await _namesGetter.GetAllExhibitionNames();
+            await _exhibitionRepository.GetAllExhibitionNames();
             Console.Write("Введите название выставки: ");
             var exhibitionName = Console.ReadLine();
             
-            var allExhibitionNames = await _namesGetter.GetExhibitionNamesList();
-            if (allExhibitionNames.All(name => name != exhibitionName))
+            if (await _exhibitionRepository.GetByName(exhibitionName) == null)
             {
                 throw new Exception($"Выставки {exhibitionName} не существует");
             }
@@ -79,16 +73,15 @@ public class TicketFacade
             Console.Write("Введите ID билета: ");
             var id = Guid.Parse(Console.ReadLine()!);
             
-            var guids = await _namesGetter.GetTicketsGuidsList();
-            if (guids.Any(g => g == id))
+            var ticket = await _ticketRepository.GetById(id);
+            if (ticket == null)
             {
-                await _ticketRepository.Delete(id);
-                Console.WriteLine("Билет удален");
+                throw new Exception($"Такого билета не существует");
             }
-            else
-            {
-                Console.WriteLine("Билет не найден");
-            }
+            
+            await _ticketRepository.Delete(id);
+            Console.WriteLine("Билет удален");
+            
         }
         catch (FormatException)
         {
@@ -109,28 +102,24 @@ public class TicketFacade
             Console.Write("Введите ID билета: ");
             var id = Guid.Parse(Console.ReadLine()!);
             
-            var allTicketGuids = await _namesGetter.GetTicketsGuidsList();
-            if (allTicketGuids.All(g => g != id))
+            if (await _ticketRepository.GetById(id) == null)
             {
                 throw new Exception($"Такого билета не существует");
             }
             
-            await _namesGetter.GetAllVisitorsNames();
+            await _visitorRepository.GetAllVisitorsNames();
             Console.Write("Введите полное имя посетителя: ");
             var fullName = Console.ReadLine();
-            
-            var allVisitorNames = await _namesGetter.GetVisitorsNamesList();
-            if (allVisitorNames.All(name => name != fullName))
+            if (await _visitorRepository.GetIdByName(fullName!) == null)
             {
                 throw new Exception($"Пользователя {fullName} не существует");
             }
             
-            await _namesGetter.GetAllExhibitionNames();
+            await _exhibitionRepository.GetAllExhibitionNames();
             Console.Write("Введите название выставки: ");
             var exhibitionName = Console.ReadLine();
             
-            var allExhibitionNames = await _namesGetter.GetExhibitionNamesList();
-            if (allExhibitionNames.All(name => name != exhibitionName))
+            if (await _exhibitionRepository.GetIdByName(exhibitionName!) == null)
             {
                 throw new Exception($"Выставки {exhibitionName} не существует");
             }
@@ -161,9 +150,7 @@ public class TicketFacade
     public async Task GetAllTickets()
     {
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        var tickets =
-            from ticket in _context.Tickets
-            select ticket;
+        var tickets = _ticketRepository.GetTicketQuery();
 
         var count = await tickets.CountAsync();
         if (count == 0)
@@ -179,7 +166,7 @@ public class TicketFacade
             var exhibition = await _exhibitionRepository.GetById(ticket.ExhibitionId);
             var visitor = await _visitorRepository.GetById(ticket.VisitorId);
             Console.WriteLine(
-                $"ID билета: {ticket.Id} | Выставка: {exhibition.Name,-20} | Посетитель: {visitor.FullName,-20} | Цена: {ticket.Price,-10:0.00}(Со скидкой {visitor.Discount}% - {ticket.Price * (100 - visitor.Discount) / 100:0.00})");
+                $"ID билета: {ticket.Id} | Выставка: {exhibition!.Name,-20} | Посетитель: {visitor!.FullName,-20} | Цена: {ticket.Price,-10:0.00}(Со скидкой {visitor.Discount}% - {ticket.Price * (100 - visitor.Discount) / 100:0.00})");
         }
         Console.WriteLine("------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }

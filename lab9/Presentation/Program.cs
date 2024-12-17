@@ -17,9 +17,9 @@ class Program
                     options.UseNpgsql("Host=localhost;Port=5432;Database=lab9db;Username=postgres;Password=123");
                 })
             
-            .AddScoped<ExhibitionFacade>()
-            .AddScoped<VisitorFacade>()
-            .AddScoped<TicketFacade>()
+            .AddTransient<ExhibitionFacade>()
+            .AddTransient<VisitorFacade>()
+            .AddTransient<TicketFacade>()
             .BuildServiceProvider();
         
         var exhibitionFacade = serviceProvider.GetService<ExhibitionFacade>();

@@ -11,39 +11,6 @@ public class NamesGetter
     {
         _context = context;
     }
-    
-    
-    public async Task GetAllExhibitionNames()
-    {
-        Console.WriteLine("------------ Список всех выставок----------------");
-        
-        var exhibitionsQuery =
-            from exhibition in _context.Exhibitions
-            select exhibition.Name;
-        
-        var exhibitions = await exhibitionsQuery.Distinct().ToListAsync();
-        
-        foreach(var exhibition in exhibitions)
-            Console.WriteLine(exhibition);
-        
-        Console.WriteLine("-------------------------------------------------");
-    }
-    
-    public async Task GetAllVisitorsNames()
-    {
-        Console.WriteLine("----------- Список всех посетителей---------------");
-        
-        var visitorsQuery =
-            from visitor in _context.Visitors
-            select visitor.FullName;
-        
-        var visitors = await visitorsQuery.Distinct().ToListAsync();
-        
-        foreach(var visitor in visitors)
-            Console.WriteLine(visitor);
-        
-        Console.WriteLine("-------------------------------------------------");
-    }
 
     public async Task<List<string>> GetExhibitionNamesList()
     {
@@ -76,17 +43,6 @@ public class NamesGetter
         var visitorsGuids = await visitorsGuidQuery.ToListAsync();
         
         return visitorsGuids;
-    }
-    
-    public async Task<List<Guid>> GetTicketsGuidsList()
-    {
-        var ticketsGuidQuery =
-            from ticket in _context.Tickets
-            select ticket.Id;
-        
-        var ticketGuids = await ticketsGuidQuery.ToListAsync();
-        
-        return ticketGuids;
     }
     
     public async Task<List<Guid>> GetExhibitionGuidsList()
