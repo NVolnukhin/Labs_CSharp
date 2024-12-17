@@ -9,12 +9,11 @@ public class Visitor
         Discount = discount;
     }
     public Guid Id { get; init; } // PK
-    public string FullName { get; init; } = string.Empty; // Имя посетителя
+    public string FullName { get; set; } = string.Empty; // Имя посетителя
     public double Discount { get; set; } // Скидка 
     
     public static Visitor Create(string fullName, double discount)
     {
         return new Visitor(Guid.NewGuid(), fullName, discount);
     } 
-        
 }

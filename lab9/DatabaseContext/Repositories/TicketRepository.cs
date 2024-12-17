@@ -29,13 +29,14 @@ public class TicketRepository
     
     public async Task Update(Guid ticketId, Guid exhibitionId, Guid visitorId, double price)
     {
-        await _appDbContext.Tickets
-            .Where(t => t.Id == ticketId)
-            .ExecuteUpdateAsync(t => t
-                .SetProperty(p => p.ExhibitionId, exhibitionId)
-                .SetProperty(p => p.VisitorId, visitorId)
-                .SetProperty(p => p.Price, price)
-            );
+        var ticket = await _appDbContext.Tickets
+            .FirstAsync(t => t.Id == ticketId);
+        
+        ticket.ExhibitionId = exhibitionId;
+        ticket.VisitorId = visitorId;
+        ticket.Price = price;
+        
+        await _appDbContext.SaveChangesAsync();
     }
 
     public async Task Delete(Guid ticketId)
@@ -57,5 +58,27 @@ public class TicketRepository
         await _appDbContext.Tickets
             .Where(t => t.VisitorId == visitorId)
             .ExecuteDeleteAsync();
+    }
+
+    public IQueryable<Ticket> GetTicketQuery()
+    {
+        return 
+            from ticket in _appDbContext.Tickets
+            select ticket;
+    }
+
+    public async Task<Ticket?> GetById(Guid ticketId)
+    {
+        return await _appDbContext.Tickets
+            .FirstOrDefaultAsync(t => t.Id == ticketId);
+    }
+
+    public IQueryable<double> TotalSpendQuery(string visitorName)
+    {
+        return
+            from ticket in _appDbContext.Tickets
+            join visitor in _appDbContext.Visitors on ticket.VisitorId equals visitor.Id
+            where visitor.FullName == visitorName
+            select ticket.Price * (100 - visitor.Discount) / 100;
     }
 }
