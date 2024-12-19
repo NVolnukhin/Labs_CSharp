@@ -28,10 +28,8 @@ public class MathVector : IMathVector
             {
                 throw new ArgumentException("Неверный индекс.");
             }
-            else 
-            {
-                return _components[i];
-            }
+            
+            return _components[i];
         }
         set 
         {
