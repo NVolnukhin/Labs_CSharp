@@ -8,14 +8,14 @@ public class MathVector : IMathVector
 {
     private double[] _components;
 
-    public MathVector(params double[] _components)
+    public MathVector(params double[] components)
     {
-        if (_components.Length == 0)
+        if (components.Length == 0)
         {
             throw new ArgumentException("Вектор должен содержать хотя бы одно значение.");
         }
-        this._components = new double[_components.Length];
-        Array.Copy(_components, this._components, _components.Length);
+        _components = new double[components.Length];
+        Array.Copy(components, this._components, components.Length);
     }
 
     public int Dimensions => _components.Length;
@@ -28,10 +28,8 @@ public class MathVector : IMathVector
             {
                 throw new ArgumentException("Неверный индекс.");
             }
-            else 
-            {
-                return _components[i];
-            }
+            
+            return _components[i];
         }
         set 
         {
@@ -151,50 +149,22 @@ public class MathVector : IMathVector
     }
 
     public static IMathVector operator +(MathVector vector1, IMathVector vector2)
-    {
-        try
-        {
-            return vector1.Sum(vector2);
-        }
-        catch (ArgumentException)
-        {
-            throw;
-        }
+    { 
+        return vector1.Sum(vector2);
     }
 
     public static IMathVector operator -(MathVector vector1, IMathVector vector2)
     {
-        try
-        {
-            return vector1.Sum(vector2.MultiplyNumber(-1));
-        }
-        catch (ArgumentException)
-        {
-            throw;
-        }
+        return vector1.Sum(vector2.MultiplyNumber(-1));
     }
 
     public static IMathVector operator *(MathVector vector1, IMathVector vector2)
-    {
-        try
-        {
-            return vector1.Multiply(vector2);
-        }
-        catch (ArgumentException)
-        {
-            throw;
-        }
+    { 
+        return vector1.Multiply(vector2);
     }
     
     public static IMathVector operator /(MathVector vector1, MathVector vector2)
     {
-        try
-        {
-            return vector1.Division(vector2);
-        }
-        catch (ArgumentException)
-        {
-            throw;
-        }
+        return vector1.Division(vector2);
     }
 }

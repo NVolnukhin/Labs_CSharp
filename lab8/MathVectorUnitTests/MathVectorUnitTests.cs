@@ -28,7 +28,7 @@ public class MathVectorUnitTests
     {
         Assert.Throws<ArgumentException>(() =>
         {
-            var vector = new MathVector();
+            _ = new MathVector();
         });
     }
 
@@ -37,7 +37,7 @@ public class MathVectorUnitTests
     {
         IMathVector vector = new MathVector(1.0, 2.0, 3.0);
         
-        int dimensions = vector.Dimensions;
+        var dimensions = vector.Dimensions;
         
         Assert.That(dimensions, Is.EqualTo(3));
     }
@@ -66,7 +66,7 @@ public class MathVectorUnitTests
         IMathVector vector = new MathVector(1.0, 2.0, 3.0);
         Assert.Throws<ArgumentException>(() =>
         {
-            var value = vector[vector.Dimensions];
+            _ = vector[vector.Dimensions];
         });
     }
     
@@ -87,7 +87,7 @@ public class MathVectorUnitTests
         
         Assert.Throws<ArgumentException>(() =>
         {
-            var d = vector[3];
+            _ = vector[3];
         });
     }
     
@@ -98,7 +98,7 @@ public class MathVectorUnitTests
         
         Assert.Throws<ArgumentException>(() => 
         {
-            var d = vector[-1];
+            _ = vector[-1];
         });
     }
 
@@ -135,7 +135,7 @@ public class MathVectorUnitTests
         var vector = new MathVector(1.0, 2.0, 3.0);
         var result = vector.SumNumber(5.5);
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(6.5, 7.5, 8.5).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(6.5, 7.5, 8.5)));
     }
     
     [Fact]
@@ -144,25 +144,25 @@ public class MathVectorUnitTests
         var vector = new MathVector(1.0, 2.0, 3.0);
         var result = vector.SumNumber(-0.5);
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(0.5, 1.5, 2.5).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(0.5, 1.5, 2.5)));
     }
 
     [Fact]
     public void MultiplyPositiveNumber_ValidNumber_ReturnsNewVector()
     {
-        var vector = new MathVector(1.0, 2.0, 3.0);
-        var result = vector.MultiplyNumber(2.2);
+        var vector = new MathVector(1, 2.47, 3.3);
+        var result = vector.MultiplyNumber(2);
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(2.2, 4.4, 6.6).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(2, 4.94, 6.6)));
     }
     
     [Fact]
     public void MultiplyNegativeNumber_ValidNumber_ReturnsNewVector()
     {
-        var vector = new MathVector(1.0, 2.0, 3.0);
-        var result = vector.MultiplyNumber(-2.2);
+        var vector = new MathVector(1.0, 2.47, 3.3);
+        var result = vector.MultiplyNumber(-2);
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(-2.2, -4.4, -6.6).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(-2, -4.94, -6.6)));
     }
     
     [Fact]
@@ -171,7 +171,7 @@ public class MathVectorUnitTests
         var vector = new MathVector(1.0, 2.0, 3.0);
         var result = vector.MultiplyNumber(0);
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(0.0, 0.0, 0.0).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(0.0, 0.0, 0.0)));
     }
 
     [Fact]
@@ -181,7 +181,7 @@ public class MathVectorUnitTests
         var vector2 = new MathVector(4.0, -5.0, 6.0);
         var result = vector1.Sum(vector2);
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(5.0, -3.0, 9.0).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(5.0, -3.0, 9.0)));
     }
 
     [Fact]
@@ -238,17 +238,16 @@ public class MathVectorUnitTests
         var vector2 = new MathVector(4.0, 5.0, 6.0);
         var result = vector1 + vector2;
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(5.0, 7.0, 9.0).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(5.0, 7.0, 9.0)));
     }
     
     [Fact]
-    public void Operator_AdditionVectorsWithDifferrentDimensions_ThrowsArgumentException()
+    public void Operator_AdditionVectorsWithDifferentDimensions_ThrowsArgumentException()
     {
         var vector1 = new MathVector(1.0, 2.2, 3.0);
         var vector2 = new MathVector(4.0, 5.0, 6.0, 9.0);
-        IMathVector vector3;
-        
-        Assert.Throws<ArgumentException>(() => vector3 = vector1 + vector2);
+
+        Assert.Throws<ArgumentException>(() => _ = vector1 + vector2);
     }
 
     [Fact]
@@ -258,17 +257,16 @@ public class MathVectorUnitTests
         var vector2 = new MathVector(1.0, 2.2, 3.0);
         var result = vector1 - vector2;
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(3.0, 3.3, 3.0).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(3.0, 3.3, 3.0)));
     }
     
     [Fact]
-    public void Operator_SubtrationVectorsWithDifferrentDimensions_ThrowsArgumentException()
+    public void Operator_SubtractionVectorsWithDifferentDimensions_ThrowsArgumentException()
     {
         var vector1 = new MathVector(1.0, 2.2, 3.0);
         var vector2 = new MathVector(4.0, 5.0, 6.0, 9.0);
-        IMathVector vector3;
-        
-        Assert.Throws<ArgumentException>(() => vector3 = vector1 - vector2);
+
+        Assert.Throws<ArgumentException>(() => _ = vector1 - vector2);
     }
 
     [Fact]
@@ -278,37 +276,35 @@ public class MathVectorUnitTests
         var vector2 = new MathVector(4.0, 5.0, 6.0);
         var result = vector1 * vector2;
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(4.0, 10.0, 18.0).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(4.0, 10.0, 18.0)));
     }
     
     [Fact]
-    public void Operator_MultiplicationVectorsWithDifferrentDimensions_ThrowsArgumentException()
+    public void Operator_MultiplicationVectorsWithDifferentDimensions_ThrowsArgumentException()
     {
         var vector1 = new MathVector(1.0, 2.2, 3.0);
         var vector2 = new MathVector(4.0, 5.0, 6.0, 9.0);
-        IMathVector vector3;
-        
-        Assert.Throws<ArgumentException>(() => vector3 = vector1 * vector2);
+
+        Assert.Throws<ArgumentException>(() => _ = vector1 * vector2);
     }
     
     [Fact]
-    public void Operator_DivisioonVectors_ReturnsProductVector()
+    public void Operator_DivisionVectors_ReturnsProductVector()
     {
         var vector1 = new MathVector(4.0, 4.0, 4.5);
         var vector2 = new MathVector(1.0, 2.0, 4.5);
         var result = vector1 / vector2;
         
-        Assert.That(result.ToString(), Is.EqualTo(new MathVector(4.0, 2.0, 1.0).ToString()));
+        Assert.That(result, Is.EqualTo(new MathVector(4.0, 2.0, 1.0)));
     }
     
     [Fact]
-    public void Operator_DivisionVectorsWithDifferrentDimensions_ThrowsArgumentException()
+    public void Operator_DivisionVectorsWithDifferentDimensions_ThrowsArgumentException()
     {
         var vector1 = new MathVector(1.0, 2.2, 3.0);
         var vector2 = new MathVector(4.0, 5.0, 6.0, 9.0);
-        IMathVector vector3;
-        
-        Assert.Throws<ArgumentException>(() => vector3 = vector1 / vector2);
+
+        Assert.Throws<ArgumentException>(() => _ = vector1 / vector2);
     }
     
     [Fact]
@@ -316,8 +312,7 @@ public class MathVectorUnitTests
     {
         var vector1 = new MathVector(1.0, 2.2, 3.0);
         var vector2 = new MathVector(4.0, 0.0, 6.0);
-        IMathVector vector3;
-        
-        Assert.Throws<ArgumentException>(() => vector3 = vector1 / vector2);
+
+        Assert.Throws<ArgumentException>(() => _ = vector1 / vector2);
     }
 }
