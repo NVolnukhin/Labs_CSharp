@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MathVectorUnitTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a338084c197975c505f5eade24a6ca0213abc249")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0769b0dc9db02382a2dac38397acdaceb56c6366")]
 [assembly: System.Reflection.AssemblyProductAttribute("MathVectorUnitTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MathVectorUnitTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
