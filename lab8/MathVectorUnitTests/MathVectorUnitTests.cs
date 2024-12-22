@@ -406,6 +406,6 @@ public class MathVectorUnitTests
     {
         var vector = new MathVector(1.1, -2.2, 3);
         
-        Assert.That(vector.ToString(), Is.EqualTo("(1,1, -2,2, 3)"));
+        Assert.That(vector.ToString(), Is.EqualTo("(1.1, -2.2, 3)"));
     }
 }
