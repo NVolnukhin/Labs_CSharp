@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "PXUJ0dgfoxc=",
+  "dgSpecHash": "SDbC2cSmNr0=",
   "success": true,
   "projectFilePath": "/Users/nikitavolnuhin/Labs_cs/lab8/MathVectorUnitTests/MathVectorUnitTests.csproj",
   "expectedPackageFiles": [
@@ -23,7 +23,8 @@
     "/Users/nikitavolnuhin/.nuget/packages/xunit.assert/2.9.2/xunit.assert.2.9.2.nupkg.sha512",
     "/Users/nikitavolnuhin/.nuget/packages/xunit.core/2.9.2/xunit.core.2.9.2.nupkg.sha512",
     "/Users/nikitavolnuhin/.nuget/packages/xunit.extensibility.core/2.9.2/xunit.extensibility.core.2.9.2.nupkg.sha512",
-    "/Users/nikitavolnuhin/.nuget/packages/xunit.extensibility.execution/2.9.2/xunit.extensibility.execution.2.9.2.nupkg.sha512"
+    "/Users/nikitavolnuhin/.nuget/packages/xunit.extensibility.execution/2.9.2/xunit.extensibility.execution.2.9.2.nupkg.sha512",
+    "/Users/nikitavolnuhin/.nuget/packages/xunit.runner.visualstudio/3.0.0/xunit.runner.visualstudio.3.0.0.nupkg.sha512"
   ],
   "logs": []
 }
