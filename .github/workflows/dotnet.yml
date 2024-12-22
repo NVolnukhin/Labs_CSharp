@@ -1,0 +1,50 @@
+name: Run xUnit Tests
+
+on:
+  push:
+    branches:
+      - lab8  # Указывайте имя ветки, в которую должен происходить пуш
+  pull_request:
+    branches:
+      - lab8  # Опционально: запускать тесты при создании Pull Request в feature-branch
+
+jobs:
+  test:
+    runs-on: macos-latest  # Вы можете использовать другие платформы, такие как windows-latest или macos-latest
+
+    steps:
+    # Шаг 1: Клонирование репозитория
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Шаг 2: Установка .NET SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0  # Укажите нужную версию .NET
+
+    - name: Print working directory
+      run: pwd
+
+    - name: List files
+      run: ls -la
+
+    # Шаг 3: Восстановление зависимостей
+    - name: Restore dependencies
+      run: dotnet restore lab8/MathVectorUnitTests/MathVectorUnitTests.csproj
+
+    # Шаг 4: Сборка проекта
+    - name: Build project
+      run: dotnet build lab8/MathVectorUnitTests/MathVectorUnitTests.csproj --no-restore --configuration Release
+
+    # Шаг 5: Запуск тестов с xUnit
+    - name: Run tests
+      run: dotnet test lab8/MathVectorUnitTests/MathVectorUnitTests.csproj --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+    # Шаг 6: Публикация результатов тестов
+    - name: Publish test results
+      if: always()  # Этот шаг выполнится даже если тесты провалятся
+      uses: actions/upload-artifact@v3
+      with:
+        name: Test Results
+        path: '**/*.trx'

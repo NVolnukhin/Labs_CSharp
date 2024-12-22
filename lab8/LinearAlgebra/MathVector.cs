@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace LinearAlgebra;
 using System;
 using System.Collections;
@@ -131,7 +133,9 @@ public class MathVector : IMathVector
 
     public override string ToString()
     {
-        return $"({string.Join(", ", _components)})";
+        var cultureInfo = new CultureInfo("us-US"); // или любая локаль, использующая запятую
+
+        return $"({string.Join(", ", _components.Select(c => c.ToString(cultureInfo)))})";
     }
 
     public static IMathVector operator /(MathVector vector, double number)

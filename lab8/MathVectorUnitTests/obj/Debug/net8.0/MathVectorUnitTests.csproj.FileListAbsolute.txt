@@ -104,3 +104,4 @@
 /Users/nikitavolnuhin/Labs_cs/lab8/MathVectorUnitTests/obj/Debug/net8.0/MathVectorUnitTests.pdb
 /Users/nikitavolnuhin/Labs_cs/lab8/MathVectorUnitTests/obj/Debug/net8.0/MathVectorUnitTests.genruntimeconfig.cache
 /Users/nikitavolnuhin/Labs_cs/lab8/MathVectorUnitTests/obj/Debug/net8.0/ref/MathVectorUnitTests.dll
+/Users/nikitavolnuhin/Labs_cs/lab8/MathVectorUnitTests/bin/Debug/net8.0/xunit.runner.visualstudio.testadapter.dll
