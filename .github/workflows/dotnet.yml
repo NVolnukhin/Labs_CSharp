@@ -26,6 +26,9 @@ jobs:
     - name: Print working directory
       run: pwd
 
+    - name: List files
+      run: ls -la
+
     # Шаг 3: Восстановление зависимостей
     - name: Restore dependencies
       run: dotnet restore /Users/runner/work/Labs_cs/Labs_cs/lab8/MathVectorUnitTests/MathVectorUnitTests.cs
