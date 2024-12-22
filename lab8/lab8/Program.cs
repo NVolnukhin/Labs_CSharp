@@ -8,7 +8,8 @@ class Program
     {
         MathVector v1 = new MathVector(3, 8);
         MathVector v2 = new MathVector(1, 2);
-        MathVector v3 = new MathVector(1, 2, 3);      
+        var list = new List<double> { 1, 2, 3 };
+        MathVector v3 = new MathVector(list);
         MathVector infVec = new MathVector(double.PositiveInfinity, double.NegativeInfinity);      
 
         Console.WriteLine("\nВектор 1: " + v1);
@@ -87,7 +88,7 @@ class Program
             v3[1] = 88;
             v3[10] = 77;
         }
-        catch (IndexOutOfRangeException ex)
+        catch (Exception ex)
         {
             Console.WriteLine("Ошибка: " + ex.Message);
         }

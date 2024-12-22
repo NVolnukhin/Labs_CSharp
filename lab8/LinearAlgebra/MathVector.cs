@@ -6,16 +6,27 @@ using System.Linq;
 
 public class MathVector : IMathVector
 {
-    private double[] _components;
+    private readonly double[] _components;
 
-    public MathVector(params double[] components)
+    public MathVector(params object[] components)
     {
-        if (components.Length == 0)
+        if (components is [IEnumerable enumerable])
+        {
+            // Если передан список, массив или любая другая коллекция
+            _components = enumerable.Cast<object>()
+                .Select(Convert.ToDouble)
+                .ToArray();
+        }
+        else
+        {
+            // Если переданы отдельные значения
+            _components = components.Select(Convert.ToDouble).ToArray();
+        }
+
+        if (_components.Length == 0)
         {
             throw new ArgumentException("Вектор должен содержать хотя бы одно значение.");
         }
-        _components = new double[components.Length];
-        Array.Copy(components, this._components, components.Length);
     }
 
     public int Dimensions => _components.Length;
@@ -24,7 +35,7 @@ public class MathVector : IMathVector
     {
         get 
         {
-            if (i < 0 || i >= this.Dimensions)
+            if (i < 0 || i >= Dimensions)
             {
                 throw new ArgumentException("Неверный индекс.");
             }
@@ -33,14 +44,13 @@ public class MathVector : IMathVector
         }
         set 
         {
-            if (i < 0 || i >= this.Dimensions)
+            if (i < 0 || i >= Dimensions)
             {
                 throw new ArgumentException("Неверный индекс.");
             }
-            else
-            {
-                _components[i] = value;
-            }
+            
+            _components[i] = value;
+            
         }
     }
 

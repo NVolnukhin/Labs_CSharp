@@ -7,7 +7,7 @@ namespace MathVectorUnitTests;
 public class MathVectorUnitTests
 {
     [Fact]
-    public void Constructor_ValidInput_CreatesVector()
+    public void Constructor_ValidArrayInput_CreatesVector()
     {
         var components = new[] { 1.0, 2.0, 3.0 };
         var vector = new MathVector(components);
@@ -29,6 +29,32 @@ public class MathVectorUnitTests
         Assert.Throws<ArgumentException>(() =>
         {
             _ = new MathVector();
+        });
+    }
+
+    [Fact]
+    public void Constructor_ValidListInput_CreatesVector()
+    {
+        var components = new List<double> { 1.0, 2.0, 3.0 };
+        var vector = new MathVector(components);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(vector.Dimensions, Is.EqualTo(3));
+            
+            for (int i = 0; i < components.Count; i++)
+            {
+                Assert.That(vector[i], Is.EqualTo(components[i]));
+            }
+        });
+    }
+    
+    [Fact]
+    public void Constructor_EmptyListInput_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(() =>
+        {
+            _ = new MathVector(new List<double>());
         });
     }
 
@@ -81,18 +107,18 @@ public class MathVectorUnitTests
     }
 
     [Fact]
-    public void Indexer_InvalidIndex_ThrowsArgumentException()
+    public void Indexer_SetNegativeIndex_ThrowsArgumentException()
     {
         var vector = new MathVector(1.0, 2.0, 3.0);
         
         Assert.Throws<ArgumentException>(() =>
         {
-            _ = vector[3];
+            vector[-3] = 3.0;
         });
     }
     
     [Fact]
-    public void Indexer_NegativeIndex_ThrowsArgumentException()
+    public void Indexer_GetNegativeIndex_ThrowsArgumentException()
     {
         var vector = new MathVector(1.0, 2.0, 3.0);
         
@@ -146,6 +172,15 @@ public class MathVectorUnitTests
         
         Assert.That(result, Is.EqualTo(new MathVector(0.5, 1.5, 2.5)));
     }
+    
+    [Fact]
+    public void SumInfVector_ValidNumber_ReturnsNewVector()
+    {
+        var vector = new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity);
+        var result = vector.SumNumber(4534);
+        
+        Assert.That(result, Is.EqualTo(new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity)));
+    }
 
     [Fact]
     public void MultiplyPositiveNumber_ValidNumber_ReturnsNewVector()
@@ -173,7 +208,16 @@ public class MathVectorUnitTests
         
         Assert.That(result, Is.EqualTo(new MathVector(0.0, 0.0, 0.0)));
     }
-
+    
+    [Fact]
+    public void MultiplyInfVector_ValidNumber_ReturnsNewVector()
+    {
+        var vector = new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity);
+        var result = vector.MultiplyNumber(4534);
+        
+        Assert.That(result, Is.EqualTo(new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity)));
+    }
+    
     [Fact]
     public void Sum_ValidVectors_ReturnsSumVector()
     {
@@ -242,6 +286,16 @@ public class MathVectorUnitTests
     }
     
     [Fact]
+    public void Operator_AdditionInfVector_ReturnsProductVector()
+    {
+        var vector1 = new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity);
+        var vector2 = new MathVector(4.0, 5.0, 6.0);
+        var result = vector1 + vector2;
+        
+        Assert.That(result, Is.EqualTo(new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity)));
+    }
+    
+    [Fact]
     public void Operator_AdditionVectorsWithDifferentDimensions_ThrowsArgumentException()
     {
         var vector1 = new MathVector(1.0, 2.2, 3.0);
@@ -268,6 +322,16 @@ public class MathVectorUnitTests
 
         Assert.Throws<ArgumentException>(() => _ = vector1 - vector2);
     }
+    
+    [Fact]
+    public void Operator_SubtractionInfVector_ReturnsProductVector()
+    {
+        var vector1 = new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity);
+        var vector2 = new MathVector(4.0, 5.0, 6.0);
+        var result = vector1 - vector2;
+        
+        Assert.That(result, Is.EqualTo(new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity)));
+    }
 
     [Fact]
     public void Operator_MultiplicationVectors_ReturnsProductVector()
@@ -278,6 +342,17 @@ public class MathVectorUnitTests
         
         Assert.That(result, Is.EqualTo(new MathVector(4.0, 10.0, 18.0)));
     }
+    
+    [Fact]
+    public void Operator_MultiplicationInfVector_ReturnsProductVector()
+    {
+        var vector1 = new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity);
+        var vector2 = new MathVector(4.0, 5.0, 6.0);
+        var result = vector1 * vector2;
+        
+        Assert.That(result, Is.EqualTo(new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity)));
+    }
+
     
     [Fact]
     public void Operator_MultiplicationVectorsWithDifferentDimensions_ThrowsArgumentException()
@@ -299,6 +374,16 @@ public class MathVectorUnitTests
     }
     
     [Fact]
+    public void Operator_DivisionInfVector_ReturnsProductVector()
+    {
+        var vector1 = new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity);
+        var vector2 = new MathVector(4.0, 5.0, 6.0);
+        var result = vector1 / vector2;
+        
+        Assert.That(result, Is.EqualTo(new MathVector(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity)));
+    }
+    
+    [Fact]
     public void Operator_DivisionVectorsWithDifferentDimensions_ThrowsArgumentException()
     {
         var vector1 = new MathVector(1.0, 2.2, 3.0);
@@ -314,5 +399,13 @@ public class MathVectorUnitTests
         var vector2 = new MathVector(4.0, 0.0, 6.0);
 
         Assert.Throws<ArgumentException>(() => _ = vector1 / vector2);
+    }
+    
+    [Fact]
+    public void Operator_ToString_ReturnsCorrectValue()
+    {
+        var vector = new MathVector(1.1, -2.2, 3);
+        
+        Assert.That(vector.ToString(), Is.EqualTo("(1,1, -2,2, 3)"));
     }
 }
