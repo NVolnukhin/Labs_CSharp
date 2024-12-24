@@ -1,0 +1,3 @@
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/bin/Release/net8.0/publish/Demographic.dll
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/bin/Release/net8.0/publish/Demographic.deps.json
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic/bin/Release/net8.0/publish/Demographic.pdb

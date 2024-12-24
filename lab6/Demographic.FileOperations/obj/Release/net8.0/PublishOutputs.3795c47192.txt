@@ -1,0 +1,6 @@
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic.FileOperations/bin/Release/net8.0/publish/Demographic.FileOperations.dll
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic.FileOperations/bin/Release/net8.0/publish/Demographic.FileOperations.deps.json
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic.FileOperations/bin/Release/net8.0/publish/Demographic.FileOperations.pdb
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic.FileOperations/bin/Release/net8.0/publish/CsvHelper.dll
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic.FileOperations/bin/Release/net8.0/publish/Demographic.dll
+/Users/nikitavolnuhin/Labs_cs/lab6/Demographic.FileOperations/bin/Release/net8.0/publish/Demographic.pdb
