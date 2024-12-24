@@ -1,42 +1,36 @@
-﻿using System;
-using System.IO;
-using Demographic;
-using Demographic.FileOperations;
+﻿using Demographic.FileOperations;
 
 class Program
 {
-    private static void Main(string[] args)
+    static void Main(string[] args)
     {
         try
         {
-            // Чтение аргументов командной строки
-            string initialPopulationFile = args.Length > 0 ? args[0] : "/Users/nikitavolnuhin/Labs_cs/lab6/InitialAge.csv";
-            string deathRatesFile = args.Length > 1 ? args[1] : "/Users/nikitavolnuhin/Labs_cs/lab6/DeathRules.csv";
-            int startYear = args.Length > 2 ? int.Parse(args[2]) : 1970;
-            int endYear = args.Length > 3 ? int.Parse(args[3]) : 2021;
-            int initialPopulation = args.Length > 4 ? int.Parse(args[4]) : 130000000;
+            string initialAgeFile = args.Length > 0 ? args[0] : "/Users/nikitavolnuhin/Labs_cs/lab6/InitialAge.csv";
+            string deathRulesFile = args.Length > 1 ? args[1] : "/Users/nikitavolnuhin/Labs_cs/lab6/DeathRules.csv";
+            string resultFile = args.Length > 2 ? args[2] : "/Users/nikitavolnuhin/Labs_cs/lab6/SimulationResult.csv";
+            int startYear = args.Length > 3 ? int.Parse(args[3]) : 1970;
+            int endYear = args.Length > 4 ? int.Parse(args[4]) : 2021;
+            int totalPopulation = args.Length > 5 ? int.Parse(args[5]) : 130000000;
+            
+            var reader = new InitialAgeDataReader(totalPopulation, startYear);  
+            var initialPopulation = reader.ReadData(initialAgeFile);
 
-            Console.WriteLine($"Начало симуляции с {startYear} года по {endYear} год...");
+       
+            var deathRulesReader = new DeathRulesDataReader();
+            var deathRules = deathRulesReader.ReadData(deathRulesFile);
 
-            // Загрузка данных
-            var initialPopulationData = FileOperations.LoadInitialPopulation(initialPopulationFile);
-            var deathRates = FileOperations.LoadDeathRates(deathRatesFile);
+        
+            var engine = new Engine(initialPopulation, deathRules);
+            engine.StartSimulation(startYear, endYear);
 
-            // Создание движка моделирования
-            IEngine engine = new Engine(initialPopulationData, deathRates, startYear, initialPopulation);
-
-            // Запуск моделирования
-            var results = engine.RunSimulation(startYear, endYear);
-
-            // Сохранение результатов
-            var outputFilePath = "/Users/nikitavolnuhin/Labs_cs/lab6/SimulationResults.csv";
-            FileOperations.SaveResults(results, outputFilePath);
-
-            Console.WriteLine($"Симуляция завершена. Результаты сохранены в {outputFilePath}");
+        
+            var writer = new SimulationResultWriter();
+            writer.WriteData(resultFile, engine.GetResults());
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Возникла ошибка: {ex.Message}");
+            Console.WriteLine($"Ошибка: {ex.Message}");
         }
     }
 }
