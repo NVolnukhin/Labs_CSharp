@@ -30,7 +30,7 @@ public class ExhibitionFacade
             }
             
             Console.Write("Введите дату проведения выставки (дд-мм-гггг): ");
-            var date = DateTime.Parse(Console.ReadLine()!).ToUniversalTime() ;
+            var date = DateTime.Parse(Console.ReadLine()!).ToUniversalTime().AddDays(1);
             
             var exhibition = Exhibition.Create(name, date);
             Console.WriteLine($"Создана выставка {exhibition.Id}");
@@ -138,15 +138,14 @@ public class ExhibitionFacade
 
         Console.Write("Введите название выставки: ");
         var exhibitionName = Console.ReadLine()!;
-
-        if (await _exhibitionRepository.GetIdByName(exhibitionName) == null)
+        var exhibitionId = await _exhibitionRepository.GetIdByName(exhibitionName);
+        
+        if (exhibitionId == null)
         {
             throw new Exception($"Выставки {exhibitionName} не существует");
         }
 
-        var ticketsQuery = _ticketRepository.GetTicketQuery();
-
-        var amount = await ticketsQuery.CountAsync();
+        var amount = await _ticketRepository.GetTicketAmountForExhibition(exhibitionId);
 
         Console.WriteLine(
             amount == 0
@@ -163,24 +162,26 @@ public class ExhibitionFacade
         
         Console.Write("Введите имя посетителя: ");
         var visitorName = Console.ReadLine()!;
+        var visitorId = await _visitorRepository.GetIdByName(visitorName);
 
-
-        if (await _visitorRepository.GetByName(visitorName) == null)
+        if (visitorId == null)
         {
             throw new Exception($"Посетитель {visitorName} не найден");
         }
 
         
-        var exhibitionsQuery =
-            _exhibitionRepository.GetExhibitionQuery();
+        var ticketsQuery =
+            _ticketRepository.GetTicketQuery();
     
         var totalSpendQuery = _ticketRepository.TotalSpendQuery(visitorName);
     
-        var distinctAmount = await exhibitionsQuery
-            .Distinct()
+        var distinctAmount = await ticketsQuery
+            .Where(t => t.VisitorId == visitorId)
+            .GroupBy(t => t.ExhibitionId)
             .CountAsync();
     
-        var totalAmount = await exhibitionsQuery
+        var totalAmount = await ticketsQuery
+            .Where(t => t.VisitorId == visitorId)
             .CountAsync();
 
         var totalSpend = await totalSpendQuery
@@ -189,9 +190,6 @@ public class ExhibitionFacade
         Console.WriteLine($"Посещено уникальных выставок: {distinctAmount}");
         Console.WriteLine($"Куплено всего билетов: {totalAmount}");
         Console.WriteLine($"Всего потрачено денег на выставки: {totalSpend:0.00}\n");
-        
-        
-       
     }
 
     // Средний процент скидки на выставку
@@ -224,7 +222,5 @@ public class ExhibitionFacade
 
             Console.WriteLine($"Средняя скидка: {avgDiscount:0.00}%\n");
         }
-    
-        
     }
 }

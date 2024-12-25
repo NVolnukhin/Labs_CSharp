@@ -13,6 +13,4 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<Visitor> Visitors { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
     public AppDbContext GetAppDbContext() => this;
-
-    
 }
