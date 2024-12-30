@@ -8,7 +8,7 @@ namespace Presentation;
 
 class Program
 {
-    private static async Task Main(string[] args)
+    private static async Task Main()
     {
         var serviceProvider = new ServiceCollection()
             .AddDbContext<AppDbContext>(

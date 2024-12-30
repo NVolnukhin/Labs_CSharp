@@ -67,6 +67,14 @@ public class TicketRepository
             select ticket;
     }
 
+    public async Task<int> GetTicketAmountForExhibition(Guid exhibitionId)
+    {
+        return
+            await _appDbContext.Tickets
+            .Where(t => t.ExhibitionId == exhibitionId)
+            .CountAsync();
+    }
+
     public async Task<Ticket?> GetById(Guid ticketId)
     {
         return await _appDbContext.Tickets
