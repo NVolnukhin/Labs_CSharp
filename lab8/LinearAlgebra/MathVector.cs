@@ -133,7 +133,7 @@ public class MathVector : IMathVector
 
     public override string ToString()
     {
-        var cultureInfo = new CultureInfo("us-US"); // или любая локаль, использующая запятую
+        var cultureInfo = new CultureInfo("us-US");
 
         return $"({string.Join(", ", _components.Select(c => c.ToString(cultureInfo)))})";
     }

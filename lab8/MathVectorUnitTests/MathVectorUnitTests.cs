@@ -237,6 +237,8 @@ public class MathVectorUnitTests
         Assert.Throws<ArgumentException>(() => vector1.Sum(vector2));
     }
 
+    
+    
     [Fact]
     public void ScalarMultiply_ValidVectors_ReturnsCorrectResult()
     {
