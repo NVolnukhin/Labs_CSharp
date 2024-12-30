@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.ComponentModel;
 
 namespace lab7;
 
@@ -72,6 +73,23 @@ public class ConveyorSystem
     private void LogMetrics()
     {
         Console.WriteLine("\n------------------------------------Сводка------------------------------------\n");
+        Console.WriteLine($"---Конфигурация--- \nЗадержки стекольных заводов(в мс):");
+        foreach (var delay in _config.EmitterDelays)
+        {
+            Console.WriteLine($"{delay} ");
+        }
+        Console.WriteLine("\nЗадержки курьерских компаний(в мс): ");
+        foreach (var delay in _config.ProcessorDelays)
+        {
+            Console.WriteLine($"{delay} ");
+        }
+        Console.WriteLine("\nЗадержки получателей(в мс): ");
+        foreach (var delay in _config.RecieverDelays)
+        {
+            Console.WriteLine($"{delay} ");
+        }
+        Console.WriteLine($"\nПродолжительность симуляции(в мс): {_config.SimulationDuration}\n");
+        Console.WriteLine("\n---Результаты симуляции---");
         foreach (var emitter in _emitters)
         {
             Console.WriteLine($"Стекольный завод {emitter.Id}: Выполнено заказов: {emitter.EventsGenerated}");
